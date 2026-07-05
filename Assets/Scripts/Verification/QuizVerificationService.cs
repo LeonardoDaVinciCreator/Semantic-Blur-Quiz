@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data;
 using Localization;
 
@@ -10,7 +11,7 @@ public enum VerificationResult
 
 public class QuizVerificationService
 {
-    public VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName)
+    public VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys)
     {
         if(string.IsNullOrEmpty(playerInput)) return VerificationResult.Wrong;
         
@@ -21,8 +22,15 @@ public class QuizVerificationService
 
         foreach(var synKey in currentLevel.synonymsKeys)
         {
+            if (usedSynonymsKeys != null && usedSynonymsKeys.Contains(synKey))
+                continue;
+
             string word = LanguageManager.Instance.GetWordByKey(tableName, synKey).ToLower().Trim();
-            if(word == lowerInput) return VerificationResult.CloseMatch;
+            if(word == lowerInput)
+            {
+                usedSynonymsKeys?.Add(synKey); 
+                return VerificationResult.CloseMatch;
+            }
         }
 
         return VerificationResult.Wrong;

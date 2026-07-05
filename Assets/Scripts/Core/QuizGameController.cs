@@ -42,6 +42,7 @@ namespace Core
 
         private int _currentLevelIndex = 0;
         private float _targetPixelSize;
+        private List<string> _usedSynonymsKeys = new List<string>();
 
         private void Start()
         {
@@ -92,7 +93,7 @@ namespace Core
             LevelData level = _jsonService.GetLevelData(_currentLevelIndex);
             if (level == null) return;
 
-            VerificationResult result = _verificationService.VerifyAnswer(playerInput, level, _tableName);
+            VerificationResult result = _verificationService.VerifyAnswer(playerInput, level, _tableName, _usedSynonymsKeys);
 
             _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);
 
@@ -148,6 +149,7 @@ namespace Core
             }
 
             _progressionService.ResetProgress();
+            _usedSynonymsKeys.Clear();
 
             _pixelStat.CurrentPixelSize = _pixelStat.MinPixelSize;
             _targetPixelSize = _pixelStat.MinPixelSize;
