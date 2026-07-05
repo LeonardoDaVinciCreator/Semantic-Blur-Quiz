@@ -6,6 +6,8 @@ using Data;
 using Progression;
 using System.Collections.Generic;
 using AtributeEditor;
+using System;
+using UnityEngine.SceneManagement;
 
 namespace Core
 {
@@ -30,8 +32,12 @@ namespace Core
         [SerializeField] private Image _quizImage;
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _menuButton;
         
         [SerializeField] private TMP_Text _statusText;
+
+        [Header("Сцена меню")]
+        [SerializeField] private string _nameMenuScene;
         
         private QuizJsonService _jsonService;
         private QuizVerificationService _verificationService;
@@ -42,7 +48,7 @@ namespace Core
 
         private int _currentLevelIndex = 0;
         private float _targetPixelSize;
-        private List<string> _usedSynonymsKeys = new List<string>();
+        private List<string> _usedSynonymsKeys = new List<string>();        
 
         private void Start()
         {
@@ -69,10 +75,12 @@ namespace Core
             _inputField.onSubmit.AddListener(OnInputFieldSubmit);
             _nextButton.onClick.AddListener(NextLevel);
 
+            _menuButton.onClick.AddListener(OnMenuSelect);
+
             LoadLevel(_currentLevelIndex);
 
 
-        }
+        }        
 
         private void Update()
         {
@@ -142,6 +150,9 @@ namespace Core
                 _inputField.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);
 
+                _menuButton.gameObject.SetActive(true);
+                _menuButton.Select();
+
                 _statusText.color = Color.green;
                 _statusText.text = "Тема пройдена!";
 
@@ -177,6 +188,11 @@ namespace Core
         {
             _currentLevelIndex++;
             LoadLevel(_currentLevelIndex);
+        }
+
+        private void OnMenuSelect()
+        {
+            SceneManager.LoadSceneAsync(_nameMenuScene);
         }
 
         private void GetPixelizationStat()
