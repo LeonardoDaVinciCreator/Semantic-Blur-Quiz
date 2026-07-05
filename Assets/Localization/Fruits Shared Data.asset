@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Fruits Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Fruits
+  m_TableCollectionNameGuidString: 137d076299e7e1c42b50970bf4c1e314
+  m_Entries:
+  - m_Id: 7506907136
+    m_Key: word_apple
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907137
+    m_Key: word_banana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907138
+    m_Key: word_orange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907139
+    m_Key: word_pear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56269885440
+    m_Key: syn_fruit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77690195968
+    m_Key: syn_food
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90558320640
+    m_Key: syn_red
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411776
+    m_Key: syn_green
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411777
+    m_Key: syn_yellow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411778
+    m_Key: syn_orange_color
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101000
+    m_Key: syn_round
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101001
+    m_Key: syn_long
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101002
+    m_Key: syn_oval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902000
+    m_Key: syn_juice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902001
+    m_Key: syn_sweet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902002
+    m_Key: syn_sour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902003
+    m_Key: syn_soft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137894561000
+    m_Key: syn_tree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137894561001
+    m_Key: syn_palm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123000
+    m_Key: syn_summer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123001
+    m_Key: syn_exotic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123002
+    m_Key: syn_monkey
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123003
+    m_Key: syn_peel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159845120000
+    m_Key: syn_citrus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159845120001
+    m_Key: syn_slice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169845120000
+    m_Key: syn_mandarin_like
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169845120001
+    m_Key: syn_apple_like
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3716904648144060509
+  references:
+    version: 2
+    RefIds:
+    - rid: 3716904648144060509
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1783141468971

@@ -1,0 +1,36 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "imageName": "img_apple",
+      "correctWordKey": "word_apple",
+      "synonymsKeys": [
+        "syn_fruit", "syn_food", "syn_red", "syn_green", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_tree", "syn_summer"
+      ]
+    },
+    {
+      "id": 2,
+      "imageName": "img_banana",
+      "correctWordKey": "word_banana",
+      "synonymsKeys": [
+        "syn_fruit", "syn_food", "syn_yellow", "syn_long", "syn_sweet", "syn_palm", "syn_exotic", "syn_monkey", "syn_soft", "syn_peel"
+      ]
+    },
+    {
+      "id": 3,
+      "imageName": "img_orange",
+      "correctWordKey": "word_orange",
+      "synonymsKeys": [
+        "syn_fruit", "syn_food", "syn_orange_color", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_citrus", "syn_mandarin_like", "syn_slice"
+      ]
+    },
+    {
+      "id": 4,
+      "imageName": "img_pear",
+      "correctWordKey": "word_pear",
+      "synonymsKeys": [
+        "syn_fruit", "syn_food", "syn_yellow", "syn_green", "syn_apple_like", "syn_soft", "syn_tree", "syn_sweet", "syn_juice", "syn_oval"
+      ]
+    }
+  ]
+}
