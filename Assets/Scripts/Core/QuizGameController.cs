@@ -20,6 +20,10 @@ namespace Core
         [TableName]
         [SerializeField] private string _tableNameReplicas = "Replicas";
 
+        [Header("Таблица для UI")]
+        [TableName]
+        [SerializeField] private string _tableNameUI = "UITable";
+
         [Header("Таблица для квиза")]
         [TableName]
         [SerializeField] private string _tableName = "GameWords";
@@ -33,11 +37,31 @@ namespace Core
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Button _nextButton;
         [SerializeField] private Button _menuButton;
-        
+
         [SerializeField] private TMP_Text _statusText;
+
+        [Header("Пауза/Настройки")]
+        [SerializeField] private Button _settingsButton;
+        [SerializeField] private GameObject _settingsPanel;
+        
+        [SerializeField] private TMP_Text _musicText;
+        [SerializeField] private TMP_Text _musicValue;
+        [SerializeField] private Slider _musicSlider;
+
+        [SerializeField] private TMP_Text _soundText;
+        [SerializeField] private TMP_Text _soundValue;
+        [SerializeField] private Slider _soundSlider;
+
+        [SerializeField] private TMP_Text _continueButtonText;
+        [SerializeField] private TMP_Text _mainMenuButtonText;
+        [SerializeField] private Button _continueButton;
+        [SerializeField] private Button _mainMenuButton;        
 
         [Header("Сцена меню")]
         [SerializeField] private string _nameMenuScene;
+
+        [Header("Локализация UI")]
+        [SerializeField] private UIConfigSO _uiConfig;
         
         private QuizJsonService _jsonService;
         private QuizVerificationService _verificationService;
@@ -49,7 +73,9 @@ namespace Core
         private int _currentLevelIndex = 0;
         private bool _isWinAnimation = false;
         private float _targetPixelSize;
-        private List<string> _usedSynonymsKeys = new List<string>();        
+        private List<string> _usedSynonymsKeys = new List<string>();    
+
+        private bool _isPaused = false;    
 
         private void Start()
         {
@@ -73,18 +99,50 @@ namespace Core
             _verificationService = new QuizVerificationService();
             _progressionService = new QuizProgressionService();
 
+            InitUI();
+
             _inputField.onSubmit.AddListener(OnInputFieldSubmit);
             _nextButton.onClick.AddListener(NextLevel);
 
-            _menuButton.onClick.AddListener(OnMenuSelect);
+            _menuButton.onClick.AddListener(GoToMainMenu);
+
+            _settingsButton.onClick.AddListener(OpenSettingsPanel);
 
             LoadLevel(_currentLevelIndex);
-
-
         }        
+
+        private void InitUI()
+        {            
+            _musicText.text = GetLocalizedString(_uiConfig.Settings.MusicLabel);
+            _soundText.text = GetLocalizedString(_uiConfig.Settings.SoundLabel);
+            _continueButtonText.text = GetLocalizedString(_uiConfig.Settings.ContinueButton);
+            _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Settings.MainMenuButton);
+
+            _nextButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.NextButton);
+            _menuButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.MenuButton);
+            _settingsButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.SettingsButton);
+
+            _musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
+            _soundSlider.onValueChanged.AddListener(OnSoundSliderChanged);
+
+            LoadVolumeSettings();
+
+            _continueButton.onClick.AddListener(CloseSettingsPanel);
+            _mainMenuButton.onClick.AddListener(GoToMainMenu);
+
+            _settingsPanel.SetActive(false);
+        }
+
+        private string GetLocalizedString(string key)
+        {
+            if (string.IsNullOrEmpty(key)) return string.Empty;
+            return Localization.LanguageManager.Instance.GetWordByKey(_tableNameUI, key);
+        }
 
         private void Update()
         {
+            if (_isPaused) return;
+
             // Плавное изменение пикселизации на экране
             float currentMatValue = _quizImage.material.GetFloat(_namePixelSize);
             if (Mathf.Abs(currentMatValue - _targetPixelSize) > 0.1f)
@@ -168,6 +226,8 @@ namespace Core
         {
             LevelData level = _jsonService.GetLevelData(index);
 
+            string randomKey = "";
+
             if (level == null)
             {
                 Debug.Log("Все уровни пройдены, показ результатов и переход на главное меню");
@@ -181,7 +241,8 @@ namespace Core
                 _menuButton.Select();
 
                 _statusText.color = Color.green;
-                _statusText.text = "Тема пройдена!";
+                randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
+                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
 
                 return;
             }
@@ -204,7 +265,7 @@ namespace Core
             _nextButton.gameObject.SetActive(false);
             _inputField.gameObject.SetActive(true);
 
-            string randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
+            randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
 
             _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
 
@@ -218,9 +279,77 @@ namespace Core
             LoadLevel(_currentLevelIndex);
         }
 
-        private void OnMenuSelect()
+        private void OpenSettingsPanel()
         {
-            SceneManager.LoadSceneAsync(_nameMenuScene);
+            _settingsPanel.SetActive(true);
+            _isPaused = true;
+            Time.timeScale = 0f;
+
+            _inputField.DeactivateInputField();
+            _inputField.interactable = false;
+            _nextButton.interactable = false;
+
+            // отображение текущих значений громкости
+            UpdateVolumeDisplay();
+        }
+
+        private void CloseSettingsPanel()
+        {
+            _settingsPanel.SetActive(false);
+            _isPaused = false;
+            Time.timeScale = 1f;
+
+            _inputField.interactable = true;
+            _nextButton.interactable = true;
+
+            // Если поле ввода активно (не скрыто после победы), возврат фокуса
+            if (_inputField.gameObject.activeSelf)
+            {
+                _inputField.ActivateInputField();
+            }
+
+            SaveVolumeSettings();
+        }
+
+        private void GoToMainMenu()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(_nameMenuScene);
+        }
+
+        private void OnMusicSliderChanged(float value)
+        {
+            _musicValue.text = Mathf.RoundToInt(value * 100).ToString() + "%";            
+            AudioManager.Instance?.SetMusicVolume(value);
+        }
+
+        private void OnSoundSliderChanged(float value)
+        {
+            _soundValue.text = Mathf.RoundToInt(value * 100).ToString() + "%";            
+            AudioManager.Instance?.SetSoundVolume(value);
+        }
+
+        private void LoadVolumeSettings()
+        {
+            float music = AudioManager.Instance != null ? AudioManager.Instance.GetMusicVolume() : AudioManager.DefaultMusicVolume;
+            float sound = AudioManager.Instance != null ? AudioManager.Instance.GetSoundVolume() : AudioManager.DefaultSoundVolume;
+
+            _musicSlider.value = music;
+            _soundSlider.value = sound;
+
+            UpdateVolumeDisplay();
+        }
+
+        private void SaveVolumeSettings()
+        {
+            AudioManager.Instance?.SetMusicVolume(_musicSlider.value);
+            AudioManager.Instance?.SetSoundVolume(_soundSlider.value);
+        }
+
+        private void UpdateVolumeDisplay()
+        {
+            OnMusicSliderChanged(_musicSlider.value);
+            OnSoundSliderChanged(_soundSlider.value);
         }
 
         private void GetPixelizationStat()

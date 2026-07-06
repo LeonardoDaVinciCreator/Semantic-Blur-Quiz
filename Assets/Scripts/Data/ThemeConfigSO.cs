@@ -38,7 +38,7 @@ namespace Data
                 else
                 {
                     theme.FolderPath = string.Empty;
-                }
+                } 
             }
         }
         #endif

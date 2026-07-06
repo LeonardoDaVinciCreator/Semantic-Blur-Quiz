@@ -29,9 +29,15 @@ MonoBehaviour:
         - key: wrong_2
       Ignore:
         Keys:
-        - key: 
+        - key: ignore_1
+        - key: ignore_1
     Questions:
       Question:
         Keys:
         - key: quest_1
         - key: quest_2
+    Finishing:
+      Finish:
+        Keys:
+        - key: finish_1
+        - key: finish_2

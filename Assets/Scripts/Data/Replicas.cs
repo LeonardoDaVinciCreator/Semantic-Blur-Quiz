@@ -43,10 +43,18 @@ namespace Data
     }
 
     [Serializable]
+    public class Finishing
+    {
+        public Replic Finish;
+    }
+
+    [Serializable]
     public class Replicas
     {
         public Answers Answers;
         public Questions Questions;
+
+        public Finishing Finishing;
     }
 
     public static class ListExtensions

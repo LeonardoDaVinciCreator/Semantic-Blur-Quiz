@@ -19,6 +19,58 @@ MonoBehaviour:
     m_Key: theme_fruit
     m_Metadata:
       m_Items: []
+  - m_Id: 280508847247360
+    m_Key: ui_settings_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280530133340160
+    m_Key: ui_settings_music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280562769219584
+    m_Key: ui_settings_sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280568750297088
+    m_Key: ui_settings_continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280571795361792
+    m_Key: ui_settings_main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280602422169600
+    m_Key: ui_finish_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280630427537408
+    m_Key: ui_finish_restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280650000000000
+    m_Key: ui_main_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280660000000000
+    m_Key: ui_main_start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280670000000000
+    m_Key: ui_main_settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280680000000000
+    m_Key: ui_main_quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280690000000000
+    m_Key: ui_game_next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 280700000000000
+    m_Key: ui_game_menu
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

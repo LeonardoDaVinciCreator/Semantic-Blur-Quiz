@@ -59,6 +59,14 @@ MonoBehaviour:
     m_Key: ignore_2
     m_Metadata:
       m_Items: []
+  - m_Id: 340809399554048
+    m_Key: finish_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 340845168578560
+    m_Key: finish_2
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

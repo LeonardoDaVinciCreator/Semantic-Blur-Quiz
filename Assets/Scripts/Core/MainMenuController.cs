@@ -46,7 +46,7 @@ namespace Core
             GameManager.Instance.Folder = selectedTheme.FolderPath;
             GameManager.Instance.TableName = selectedTheme.GameTableName;
 
-            SceneManager.LoadSceneAsync(selectedTheme.Scene);
+            SceneManager.LoadScene(selectedTheme.Scene);
         }
     }
 }
