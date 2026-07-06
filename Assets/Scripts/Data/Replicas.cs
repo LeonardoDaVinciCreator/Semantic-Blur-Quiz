@@ -29,6 +29,8 @@ namespace Data
         public Replic CloseMatch;
         
         public Replic Wrong;
+
+        public Replic Ignore;
     }
 
     /// <summary>

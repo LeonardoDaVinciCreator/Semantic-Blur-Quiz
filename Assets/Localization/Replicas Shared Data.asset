@@ -51,6 +51,14 @@ MonoBehaviour:
     m_Key: quest_2
     m_Metadata:
       m_Items: []
+  - m_Id: 295668362137600
+    m_Key: ignore_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295738612535296
+    m_Key: ignore_2
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

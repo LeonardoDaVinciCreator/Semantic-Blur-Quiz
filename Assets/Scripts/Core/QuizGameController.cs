@@ -98,14 +98,28 @@ namespace Core
         {
             if (string.IsNullOrEmpty(playerInput)) return;
 
+            _pixelStat.CurrentPixelSize = _quizImage.material.GetFloat(_namePixelSize);
+
             LevelData level = _jsonService.GetLevelData(_currentLevelIndex);
             if (level == null) return;
 
             VerificationResult result = _verificationService.VerifyAnswer(playerInput, level, _tableName, _usedSynonymsKeys);
+            
+            string randomKey = "";
+
+            if (result == VerificationResult.Ignore)
+            {
+                randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
+                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+                _statusText.color = Color.gray;
+                _inputField.text = "";
+                _inputField.ActivateInputField();
+                return;
+            }
 
             _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);
 
-            string randomKey = "";
+            
 
             // Обрабатываем результат
             switch (result)

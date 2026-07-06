@@ -27,6 +27,9 @@ MonoBehaviour:
         Keys:
         - key: wrong_1
         - key: wrong_2
+      Ignore:
+        Keys:
+        - key: 
     Questions:
       Question:
         Keys:

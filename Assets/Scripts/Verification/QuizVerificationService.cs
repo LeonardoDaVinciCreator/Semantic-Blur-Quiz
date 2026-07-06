@@ -6,7 +6,9 @@ public enum VerificationResult
 {
     Wrong,       // Красный
     CloseMatch,  // Желтый
-    Win          // Зеленый
+    Win,          // Зеленый
+
+    Ignore       // Ничего не делать
 }
 
 public class QuizVerificationService
@@ -30,6 +32,16 @@ public class QuizVerificationService
             {
                 usedSynonymsKeys?.Add(synKey); 
                 return VerificationResult.CloseMatch;
+            }
+        }
+
+        //проверка на повтор слов
+        foreach(var synKey in currentLevel.synonymsKeys)
+        {
+            string word = LanguageManager.Instance.GetWordByKey(tableName, synKey).ToLower().Trim();
+            if(word == lowerInput && usedSynonymsKeys.Contains(synKey))
+            {
+                return VerificationResult.Ignore;
             }
         }
 
