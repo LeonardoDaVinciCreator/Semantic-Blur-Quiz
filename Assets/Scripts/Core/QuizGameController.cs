@@ -47,6 +47,7 @@ namespace Core
         private PixelizationStat _pixelStat = new PixelizationStat();
 
         private int _currentLevelIndex = 0;
+        private bool _isWinAnimation = false;
         private float _targetPixelSize;
         private List<string> _usedSynonymsKeys = new List<string>();        
 
@@ -88,7 +89,19 @@ namespace Core
             float currentMatValue = _quizImage.material.GetFloat(_namePixelSize);
             if (Mathf.Abs(currentMatValue - _targetPixelSize) > 0.1f)
             {
-                float nextValue = Mathf.Lerp(currentMatValue, _targetPixelSize, Time.deltaTime * 5f);
+                float speed;
+                if (_isWinAnimation)
+                {
+                    float totalChange = Mathf.Abs(_targetPixelSize - _pixelStat.CurrentPixelSize);
+                    // Чем больше изменение, тем медленнее скорость
+                    speed = Mathf.Clamp(27.5f / (totalChange / _blurStep + 0.5f), 0.33f, 10f);
+                }
+                else
+                {
+                    speed = _blurStep; // обычная скорость
+                }
+
+                float nextValue = Mathf.Lerp(currentMatValue, _targetPixelSize, Time.deltaTime * speed);
                 _quizImage.material.SetFloat(_namePixelSize, nextValue);
                 _pixelStat.CurrentPixelSize = nextValue;
             }
@@ -117,9 +130,9 @@ namespace Core
                 return;
             }
 
-            _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);
+            _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);       
 
-            
+            _isWinAnimation = result == VerificationResult.Win;
 
             // Обрабатываем результат
             switch (result)
@@ -175,6 +188,7 @@ namespace Core
 
             _progressionService.ResetProgress();
             _usedSynonymsKeys.Clear();
+            _isWinAnimation = false;
 
             _pixelStat.CurrentPixelSize = _pixelStat.MinPixelSize;
             _targetPixelSize = _pixelStat.MinPixelSize;
