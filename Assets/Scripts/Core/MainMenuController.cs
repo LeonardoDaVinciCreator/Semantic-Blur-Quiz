@@ -23,18 +23,19 @@ namespace Core
 
         public void BuildMenu()
         {
-            foreach(var btn in _spawnedButtons)
+            if (_themeConfigSO == null || _themeConfigSO.Themes == null) return;
+
+            for (int i = _container.childCount - 1; i >= 0; i--)
             {
-                Destroy(btn);
+                DestroyImmediate(_container.GetChild(i).gameObject);
             }
             _spawnedButtons.Clear();
-
-            if (_themeConfigSO == null || _themeConfigSO.Themes == null) return;
 
             foreach (var themeData in _themeConfigSO.Themes)
             {
                 ThemeMenuButton newButton = Instantiate(_buttonPrefab, _container);
                 newButton.Initialize(themeData, OnThemeClicked);
+                UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_container as RectTransform);
                 _spawnedButtons.Add(newButton);
             }
         }

@@ -20,7 +20,9 @@ MonoBehaviour:
   Game:
     NextButton: ui_game_next
     MenuButton: ui_game_menu
-    ThemeComplete: ui_game_complete
+    SettingsButton: ui_main_settings
+    FinishQuiz: ui_game_finish
+    QuitButton: ui_main_quit
   Settings:
     Title: ui_settings_title
     MusicLabel: ui_settings_music

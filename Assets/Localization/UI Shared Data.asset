@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: ui_game_menu
     m_Metadata:
       m_Items: []
+  - m_Id: 292116470321152
+    m_Key: ui_game_finish
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

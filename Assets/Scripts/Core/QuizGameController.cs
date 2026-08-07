@@ -41,20 +41,15 @@ namespace Core
         [SerializeField] private TMP_Text _statusText;
 
         [Header("Пауза/Настройки")]
-        [SerializeField] private Button _settingsButton;
         [SerializeField] private GameObject _settingsPanel;
         
         [SerializeField] private TMP_Text _musicText;
-        [SerializeField] private TMP_Text _musicValue;
         [SerializeField] private Slider _musicSlider;
 
         [SerializeField] private TMP_Text _soundText;
-        [SerializeField] private TMP_Text _soundValue;
         [SerializeField] private Slider _soundSlider;
-
-        [SerializeField] private TMP_Text _continueButtonText;
+       
         [SerializeField] private TMP_Text _mainMenuButtonText;
-        [SerializeField] private Button _continueButton;
         [SerializeField] private Button _mainMenuButton;        
 
         [Header("Сцена меню")]
@@ -94,7 +89,7 @@ namespace Core
             TextAsset textAsset = Resources.Load<TextAsset>($"{_nameFolder}/levels");
 
             _jsonService = new QuizJsonService();
-            _jsonService.Initialize(textAsset); // тут поидее нужно папку пихать
+            _jsonService.Initialize(textAsset);
 
             _verificationService = new QuizVerificationService();
             _progressionService = new QuizProgressionService();
@@ -106,7 +101,7 @@ namespace Core
 
             _menuButton.onClick.AddListener(GoToMainMenu);
 
-            _settingsButton.onClick.AddListener(OpenSettingsPanel);
+            
 
             LoadLevel(_currentLevelIndex);
         }        
@@ -115,22 +110,19 @@ namespace Core
         {            
             _musicText.text = GetLocalizedString(_uiConfig.Settings.MusicLabel);
             _soundText.text = GetLocalizedString(_uiConfig.Settings.SoundLabel);
-            _continueButtonText.text = GetLocalizedString(_uiConfig.Settings.ContinueButton);
             _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Settings.MainMenuButton);
 
             _nextButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.NextButton);
             _menuButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.MenuButton);
-            _settingsButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.SettingsButton);
 
             _musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
             _soundSlider.onValueChanged.AddListener(OnSoundSliderChanged);
 
             LoadVolumeSettings();
 
-            _continueButton.onClick.AddListener(CloseSettingsPanel);
             _mainMenuButton.onClick.AddListener(GoToMainMenu);
 
-            _settingsPanel.SetActive(false);
+            //_settingsPanel.SetActive(false);
         }
 
         private string GetLocalizedString(string key)
@@ -191,8 +183,7 @@ namespace Core
             _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);       
 
             _isWinAnimation = result == VerificationResult.Win;
-
-            // Обрабатываем результат
+            
             switch (result)
             {
                 case VerificationResult.Win:
@@ -318,14 +309,12 @@ namespace Core
         }
 
         private void OnMusicSliderChanged(float value)
-        {
-            _musicValue.text = Mathf.RoundToInt(value * 100).ToString() + "%";            
+        {                      
             AudioManager.Instance?.SetMusicVolume(value);
         }
 
         private void OnSoundSliderChanged(float value)
-        {
-            _soundValue.text = Mathf.RoundToInt(value * 100).ToString() + "%";            
+        {          
             AudioManager.Instance?.SetSoundVolume(value);
         }
 
