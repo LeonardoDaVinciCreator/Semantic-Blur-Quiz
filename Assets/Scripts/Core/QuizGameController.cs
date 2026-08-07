@@ -59,6 +59,8 @@ namespace Core
         [SerializeField] private UIConfigSO _uiConfig;
         
         private QuizJsonService _jsonService;
+
+        private WordsCache _cache;
         private QuizVerificationService _verificationService;
         private QuizProgressionService _progressionService;
 
@@ -91,7 +93,9 @@ namespace Core
             _jsonService = new QuizJsonService();
             _jsonService.Initialize(textAsset);
 
-            _verificationService = new QuizVerificationService();
+            _cache = new WordsCache();
+            _verificationService = new QuizVerificationService(_cache);
+
             _progressionService = new QuizProgressionService();
 
             InitUI();
@@ -104,7 +108,12 @@ namespace Core
             
 
             LoadLevel(_currentLevelIndex);
-        }        
+        }
+
+        private void OnDestroy()
+        {
+            _cache.Dispose();
+        }
 
         private void InitUI()
         {            

@@ -9,9 +9,14 @@ namespace Localization
 {
     public class LanguageManager: ManagerBase<LanguageManager>
     {
+        public event Action<string> OnLanguageChanged;
+
         [Header("Доступные языки")]
         [SerializeField] private List<Locale> _supportedLocales;
         [SerializeField] private string _currentLanguage = "ru";
+
+        [Header("Разделитель")] 
+        [SerializeField] private string _separator = "|";
         public string CurrentLanguage => _currentLanguage;
 
         protected override void Awake()
@@ -25,6 +30,16 @@ namespace Localization
         public string GetWordByKey(string tableName, string key)
         {
             return LocalizationSettings.StringDatabase.GetLocalizedString(tableName, key);
+        }
+
+        public string[] GetWordsByKey(string tableName, string key)
+        {
+            string rowWords = GetWordByKey(tableName, key);
+
+            if (string.IsNullOrEmpty(rowWords)) 
+                return new string[] {""};
+            
+            return rowWords.Split(_separator);
         }
 
         private void LoadLanguage()
@@ -48,6 +63,8 @@ namespace Localization
             
             PlayerPrefs.SetString("Language", langCode);
             PlayerPrefs.Save();
+
+            OnLanguageChanged?.Invoke(langCode);
         }
         
         public void SetLanguageByIndex(int index)
@@ -58,5 +75,7 @@ namespace Localization
                 SetLanguageByCode(locale.Identifier.Code);
             }
         }
+
+        
     }
 }

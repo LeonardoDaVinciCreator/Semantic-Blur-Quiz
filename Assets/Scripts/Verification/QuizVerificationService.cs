@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using Localization;
+using Unity.VisualScripting;
 
 public enum VerificationResult
 {
@@ -13,22 +15,31 @@ public enum VerificationResult
 
 public class QuizVerificationService
 {
+    private WordsCache _formsCache;
+    
+    public QuizVerificationService(WordsCache formsCache)
+    {
+        _formsCache = formsCache;
+    }
+
     public VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys)
     {
         if(string.IsNullOrEmpty(playerInput)) return VerificationResult.Wrong;
         
         string lowerInput = playerInput.ToLower().Trim();
 
-        string correctWord = LanguageManager.Instance.GetWordByKey(tableName, currentLevel.correctWordKey).ToLower().Trim();
-        if(correctWord == lowerInput) return VerificationResult.Win;
+        string[] correctWords = _formsCache.GetCache(tableName, currentLevel.correctWordKey);
+        
+        if(Array.Exists(correctWords, w => w.ToLower().Trim() == lowerInput)) 
+            return VerificationResult.Win;        
 
         foreach(var synKey in currentLevel.synonymsKeys)
         {
             if (usedSynonymsKeys != null && usedSynonymsKeys.Contains(synKey))
                 continue;
 
-            string word = LanguageManager.Instance.GetWordByKey(tableName, synKey).ToLower().Trim();
-            if(word == lowerInput)
+            string[] words = _formsCache.GetCache(tableName, synKey);
+            if(Array.Exists(words, w => w.ToLower().Trim() == lowerInput))
             {
                 usedSynonymsKeys?.Add(synKey); 
                 return VerificationResult.CloseMatch;
@@ -36,12 +47,18 @@ public class QuizVerificationService
         }
 
         //проверка на повтор слов
-        foreach(var synKey in currentLevel.synonymsKeys)
+        if (usedSynonymsKeys != null)
         {
-            string word = LanguageManager.Instance.GetWordByKey(tableName, synKey).ToLower().Trim();
-            if(word == lowerInput && usedSynonymsKeys.Contains(synKey))
+            foreach (var synKey in currentLevel.synonymsKeys)
             {
-                return VerificationResult.Ignore;
+                if (!usedSynonymsKeys.Contains(synKey))
+                    continue;
+
+                string[] forms = _formsCache.GetCache(tableName, synKey);
+                if (Array.Exists(forms, w => w.ToLower().Trim() == lowerInput))
+                {
+                    return VerificationResult.Ignore;
+                }
             }
         }
 
