@@ -29,3 +29,17 @@ MonoBehaviour:
     SoundLabel: ui_settings_sound
     ContinueButton: ui_settings_continue
     MainMenuButton: ui_settings_main_menu
+  EndPanel:
+    NameTable: UI
+    TitlegGameOverKey: ui_finish_title
+    TitleCompleteKey: ui_finish_title_complete
+    TimeLabelKey: time_label
+    TimeTextKey: time_text
+    ScoreLabelKey: score_label
+    ScoreTextKey: score_text
+    BestTimeLabelKey: best_time_label
+    BestTimeTextKey: best_time_text
+    BestScoreLabelKey: best_score_label
+    BestScoreTextKey: best_score_text
+    RestartButtonKey: restart_button
+    MenuButtonKey: menu_button

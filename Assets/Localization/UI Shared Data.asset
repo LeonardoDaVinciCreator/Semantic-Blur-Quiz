@@ -19,10 +19,6 @@ MonoBehaviour:
     m_Key: theme_fruit
     m_Metadata:
       m_Items: []
-  - m_Id: 280508847247360
-    m_Key: ui_settings_title
-    m_Metadata:
-      m_Items: []
   - m_Id: 280530133340160
     m_Key: ui_settings_music
     m_Metadata:
@@ -31,48 +27,60 @@ MonoBehaviour:
     m_Key: ui_settings_sound
     m_Metadata:
       m_Items: []
-  - m_Id: 280568750297088
-    m_Key: ui_settings_continue
+  - m_Id: 11948991431462912
+    m_Key: menu_button
     m_Metadata:
       m_Items: []
-  - m_Id: 280571795361792
-    m_Key: ui_settings_main_menu
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280602422169600
-    m_Key: ui_finish_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280630427537408
-    m_Key: ui_finish_restart
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280650000000000
-    m_Key: ui_main_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280660000000000
-    m_Key: ui_main_start
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280670000000000
-    m_Key: ui_main_settings
-    m_Metadata:
-      m_Items: []
-  - m_Id: 280680000000000
-    m_Key: ui_main_quit
+  - m_Id: 11948991431462913
+    m_Key: restart_button
     m_Metadata:
       m_Items: []
   - m_Id: 280690000000000
     m_Key: ui_game_next
     m_Metadata:
       m_Items: []
-  - m_Id: 280700000000000
-    m_Key: ui_game_menu
+  - m_Id: 280602422169600
+    m_Key: ui_finish_title
     m_Metadata:
       m_Items: []
-  - m_Id: 292116470321152
-    m_Key: ui_game_finish
+  - m_Id: 11948991431462914
+    m_Key: ui_finish_title_complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11938939580600320
+    m_Key: time_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11938493344403456
+    m_Key: time_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11938880050843648
+    m_Key: score_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11938738807656448
+    m_Key: score_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11939310411599872
+    m_Key: best_time_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11948991431462915
+    m_Key: best_time_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11939335271239680
+    m_Key: best_score_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11939407295827968
+    m_Key: best_score_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11948833079709696
+    m_Key: timer_text
     m_Metadata:
       m_Items: []
   m_Metadata:

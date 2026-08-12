@@ -19,7 +19,7 @@ namespace Core
         private float _musicVolume;
         private float _soundVolume;
 
-        private void Awake()
+        protected override void Awake()
         {
             base.Awake();
             if (Instance != this) return;

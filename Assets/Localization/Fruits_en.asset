@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Fruits_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 137d076299e7e1c42b50970bf4c1e314, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 7506907136
+    m_Localized: apple|apples
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907137
+    m_Localized: banana|bananas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907138
+    m_Localized: orange|oranges
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7506907139
+    m_Localized: pear|pears
+    m_Metadata:
+      m_Items: []
+  - m_Id: 56269885440
+    m_Localized: fruit|fruits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77690195968
+    m_Localized: food
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90558320640
+    m_Localized: red
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411776
+    m_Localized: green
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411777
+    m_Localized: yellow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103598411778
+    m_Localized: orange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101000
+    m_Localized: round
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101001
+    m_Localized: long
+    m_Metadata:
+      m_Items: []
+  - m_Id: 115689101002
+    m_Localized: oval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902000
+    m_Localized: juice|juices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902001
+    m_Localized: sweet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902002
+    m_Localized: sour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 126458902003
+    m_Localized: soft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137894561000
+    m_Localized: tree|trees
+    m_Metadata:
+      m_Items: []
+  - m_Id: 137894561001
+    m_Localized: palm|palms
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123000
+    m_Localized: summer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123001
+    m_Localized: exotic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123002
+    m_Localized: monkey|monkeys
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148956123003
+    m_Localized: peel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159845120000
+    m_Localized: citrus|citruses
+    m_Metadata:
+      m_Items: []
+  - m_Id: 159845120001
+    m_Localized: slice|slices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169845120000
+    m_Localized: mandarin|mandarins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 169845120001
+    m_Localized: apple|apples
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

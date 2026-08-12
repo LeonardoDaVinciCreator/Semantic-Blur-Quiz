@@ -28,5 +28,20 @@ namespace Json
         }
 
         public int GetTotalLevels() => _gameData?.levels.Count ?? 0;
+
+        public void ShuffleLevels()
+        {
+            if (_gameData?.levels == null) return;
+            int n = _gameData.levels.Count;
+            System.Random rng = new System.Random();
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                var temp = _gameData.levels[k];
+                _gameData.levels[k] = _gameData.levels[n];
+                _gameData.levels[n] = temp;
+            }
+        }
     }
 }

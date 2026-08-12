@@ -13,6 +13,9 @@ namespace Data
         public GameUI Game;        
         
         [Header("Панель настроек")]
-        public SettingsPanel Settings;        
+        public SettingsPanel Settings;     
+
+        [Header("Панель завершения")]
+        public EndPanelSO EndPanel;   
     }
 }
