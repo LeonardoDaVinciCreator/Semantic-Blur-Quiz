@@ -19,6 +19,22 @@ namespace Core
         private void Start()
         {
             BuildMenu();
+
+            if (Localization.LanguageManager.Instance != null)
+                Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
+        }
+
+        private void OnLanguageChanged(string langCode)
+        {
+            RefreshAllButtonsText();            
+        }
+
+        private void RefreshAllButtonsText()
+        {
+            foreach (var button in _spawnedButtons)
+            {
+                button.RefreshText();
+            }
         }
 
         public void BuildMenu()

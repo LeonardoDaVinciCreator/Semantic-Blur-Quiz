@@ -25,6 +25,27 @@ namespace Localization
 
             if (PlayerPrefs.HasKey("Language"))
                 _currentLanguage = PlayerPrefs.GetString("Language");
+
+            SetLanguageByCode(_currentLanguage);
+        }
+
+        private void OnEnable()
+        {
+            LocalizationSettings.SelectedLocaleChanged += OnSelectedLocaleChanged;
+        }
+
+        private void OnDisable()
+        {
+            LocalizationSettings.SelectedLocaleChanged -= OnSelectedLocaleChanged;
+        }
+
+        private void OnSelectedLocaleChanged(Locale newLocale)
+        {
+            string code = newLocale.Identifier.Code;
+            _currentLanguage = code;
+            PlayerPrefs.SetString("Language", code);
+            PlayerPrefs.Save();
+            OnLanguageChanged?.Invoke(code);
         }
 
         public string GetWordByKey(string tableName, string key)

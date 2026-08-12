@@ -29,5 +29,13 @@ namespace Core
         {
             _onThemeSelected?.Invoke(_data);
         }
+
+        public void RefreshText()
+        {
+            if (_data != null)
+            {
+                _nameText.text = Localization.LanguageManager.Instance.GetWordByKey(_data.TableName, _data.ThemeNameKey);
+            }
+        }
     }
 }

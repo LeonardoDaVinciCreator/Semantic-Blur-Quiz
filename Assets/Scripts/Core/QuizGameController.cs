@@ -37,18 +37,11 @@ namespace Core
         [SerializeField] private Image _quizImage;
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Button _nextButton;
-        [SerializeField] private Button _menuButton;
 
         [SerializeField] private TMP_Text _statusText;
 
         [Header("Пауза/Настройки")]
-        [SerializeField] private GameObject _settingsPanel;
-        
-        [SerializeField] private TMP_Text _musicText;
-        [SerializeField] private Slider _musicSlider;
-
-        [SerializeField] private TMP_Text _soundText;
-        [SerializeField] private Slider _soundSlider;
+        [SerializeField] private GameObject _settingsPanel;        
        
         [SerializeField] private TMP_Text _mainMenuButtonText;
         [SerializeField] private Button _mainMenuButton;        
@@ -99,6 +92,8 @@ namespace Core
 
         private bool _isPaused = false;    
 
+        private string _currentReplicaKey = "";
+
         private void Start()
         {
             Debug.Log(GameManager.Instance.TableName);
@@ -126,12 +121,12 @@ namespace Core
             _progressionService = new QuizProgressionService();
 
             InitUI();
+            Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
             InitPanelEnd();
 
             _inputField.onSubmit.AddListener(OnInputFieldSubmit);
             _nextButton.onClick.AddListener(NextLevel);
 
-            _menuButton.onClick.AddListener(GoToMainMenu);
 
             
 
@@ -145,12 +140,16 @@ namespace Core
         private void OnDestroy()
         {
             _cache.Dispose();
+
+            if (Localization.LanguageManager.Instance != null)
+                Localization.LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
         }
 
-        private void InitUI()
-        {            
-            _musicText.text = GetLocalizedString(_uiConfig.Settings.MusicLabel);
-            _soundText.text = GetLocalizedString(_uiConfig.Settings.SoundLabel);
+        
+
+        private void RefreshAllUI()
+        {
+            
             _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Settings.MainMenuButton);
 
             _titlePanelEnd.text = GetLocalizedString(_uiConfig.EndPanel.TitlegGameOverKey);
@@ -163,22 +162,57 @@ namespace Core
             _returnMainMenu.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
 
             _nextButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.NextButton);
-            _menuButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.MenuButton);
+        }
 
-            _musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
-            _soundSlider.onValueChanged.AddListener(OnSoundSliderChanged);
-
-            LoadVolumeSettings();
+        private void InitUI()
+        {            
+            RefreshAllUI();
 
             _mainMenuButton.onClick.AddListener(GoToMainMenu);
 
             //_settingsPanel.SetActive(false);
+
+            _titlePanelEnd.gameObject.SetActive(false);
+            _timeLabel.gameObject.SetActive(false);
+            _timeValue.gameObject.SetActive(false);
+            _scoreLabel.gameObject.SetActive(false);
+            _scoreValue.gameObject.SetActive(false);
+            _bestTimeLabel.gameObject.SetActive(false);
+            _bestTimeValue.gameObject.SetActive(false);
+            _bestScoreLabel.gameObject.SetActive(false);
+            _bestScoreValue.gameObject.SetActive(false);
         }
 
         private void InitPanelEnd()
         {
             _restartButton.onClick.AddListener(ReloadGame);
             _returnMainMenu.onClick.AddListener(LoadMainMenu);
+        }
+
+        private void OnLanguageChanged(string obj)
+        {
+            RefreshAllUI();
+
+            if (!string.IsNullOrEmpty(_currentReplicaKey))
+            {
+                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, _currentReplicaKey);
+            }
+
+            if (_titlePanelEnd.gameObject.activeSelf)
+            {
+                UpdateResultDisplay();
+            }
+        }
+
+        private void UpdateResultDisplay()
+        {
+            float totalTime = Time.time - _startTime;
+            int totalLevels = _jsonService.GetTotalLevels();
+
+            _timeValue.text = string.Format(GetLocalizedString(_uiConfig.EndPanel.TimeTextKey), totalTime);
+            _scoreValue.text = string.Format(GetLocalizedString(_uiConfig.EndPanel.ScoreTextKey), _correctCount, totalLevels);
+
+            UpdateBestResultsUI();
         }
 
         private void ReloadGame()
@@ -344,6 +378,7 @@ namespace Core
             {
                 randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+                _currentReplicaKey = randomKey;
                 _statusText.color = Color.gray;
                 _inputField.text = "";
                 _inputField.ActivateInputField();
@@ -381,6 +416,7 @@ namespace Core
             }
 
             _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+            _currentReplicaKey = randomKey;
 
             _inputField.text = "";
             if (result != VerificationResult.Win) _inputField.ActivateInputField();
@@ -399,14 +435,12 @@ namespace Core
                 _inputField.text = "";
                 _inputField.DeactivateInputField();
                 _inputField.gameObject.SetActive(false);
-                _nextButton.gameObject.SetActive(false);
-
-                _menuButton.gameObject.SetActive(true);
-                _menuButton.Select();
+                _nextButton.gameObject.SetActive(false);                
 
                 _statusText.color = Color.green;
                 randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+                _currentReplicaKey = randomKey;
 
                 OnTimeEnd(false);
 
@@ -434,6 +468,7 @@ namespace Core
             randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
 
             _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+            _currentReplicaKey = randomKey;
 
             _inputField.text = "";
             _inputField.ActivateInputField();
@@ -453,10 +488,7 @@ namespace Core
 
             _inputField.DeactivateInputField();
             _inputField.interactable = false;
-            _nextButton.interactable = false;
-
-            // отображение текущих значений громкости
-            UpdateVolumeDisplay();
+            _nextButton.interactable = false;            
         }
 
         private void CloseSettingsPanel()
@@ -473,49 +505,14 @@ namespace Core
             {
                 _inputField.ActivateInputField();
             }
-
-            SaveVolumeSettings();
         }
 
         private void GoToMainMenu()
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(_nameMenuScene);
-        }
-
-        private void OnMusicSliderChanged(float value)
-        {                      
-            AudioManager.Instance?.SetMusicVolume(value);
-        }
-
-        private void OnSoundSliderChanged(float value)
-        {          
-            AudioManager.Instance?.SetSoundVolume(value);
-        }
-
-        private void LoadVolumeSettings()
-        {
-            float music = AudioManager.Instance != null ? AudioManager.Instance.GetMusicVolume() : AudioManager.DefaultMusicVolume;
-            float sound = AudioManager.Instance != null ? AudioManager.Instance.GetSoundVolume() : AudioManager.DefaultSoundVolume;
-
-            _musicSlider.value = music;
-            _soundSlider.value = sound;
-
-            UpdateVolumeDisplay();
-        }
-
-        private void SaveVolumeSettings()
-        {
-            AudioManager.Instance?.SetMusicVolume(_musicSlider.value);
-            AudioManager.Instance?.SetSoundVolume(_soundSlider.value);
-        }
-
-        private void UpdateVolumeDisplay()
-        {
-            OnMusicSliderChanged(_musicSlider.value);
-            OnSoundSliderChanged(_soundSlider.value);
-        }
-
+        }        
+        
         private void GetPixelizationStat()
         {
             Material mat = _quizImage.material;
