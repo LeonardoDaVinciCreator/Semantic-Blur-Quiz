@@ -285,6 +285,10 @@ namespace Core
             _inputField.gameObject.SetActive(false);
             _nextButton.gameObject.SetActive(false);
 
+            _quizImage.gameObject.SetActive(false);
+            _statusText.gameObject.SetActive(false);
+            _timerText.gameObject.SetActive(false);
+
             _titlePanelEnd.gameObject.SetActive(true);
             _timeLabel.gameObject.SetActive(true);
             _timeValue.gameObject.SetActive(true);
