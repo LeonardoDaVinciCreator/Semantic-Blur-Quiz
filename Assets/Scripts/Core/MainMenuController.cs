@@ -24,6 +24,12 @@ namespace Core
                 Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
         }
 
+        private void OnDestroy()
+        {
+            if (Localization.LanguageManager.Instance != null)
+                Localization.LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+        }
+
         private void OnLanguageChanged(string langCode)
         {
             RefreshAllButtonsText();            
@@ -43,7 +49,7 @@ namespace Core
 
             for (int i = _container.childCount - 1; i >= 0; i--)
             {
-                DestroyImmediate(_container.GetChild(i).gameObject);
+                Destroy(_container.GetChild(i).gameObject);
             }
             _spawnedButtons.Clear();
 
@@ -51,13 +57,21 @@ namespace Core
             {
                 ThemeMenuButton newButton = Instantiate(_buttonPrefab, _container);
                 newButton.Initialize(themeData, OnThemeClicked);
-                UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(_container as RectTransform);
                 _spawnedButtons.Add(newButton);
             }
+
+            if (_container is RectTransform rect)
+                UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
         }
 
         private void OnThemeClicked(ThemeItemData selectedTheme)
         {
+            if (string.IsNullOrEmpty(selectedTheme.FolderPath) || string.IsNullOrEmpty(selectedTheme.Scene))
+            {
+                Debug.LogError("[MainMenu] У темы пустой FolderPath или Scene, переход отменён.");
+                return;
+            }
+
             Debug.Log($"Выбрана тема: {selectedTheme.FolderPath}");
 
             GameManager.Instance.Folder = selectedTheme.FolderPath;

@@ -752,7 +752,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1054443863, guid: 681c9b6a2999f53408afff1a492e18eb, type: 3}
+  m_Sprite: {fileID: 1388101901, guid: 681c9b6a2999f53408afff1a492e18eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -779,7 +779,7 @@ RectTransform:
   m_GameObject: {fileID: 318609167}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 936845654}
@@ -788,7 +788,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2.9139, y: -361.8}
-  m_SizeDelta: {x: 178.00002, y: 191.02809}
+  m_SizeDelta: {x: 224.00002, y: 114.01677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &330585543
 GameObject:
@@ -1180,7 +1180,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0015335, y: -0.000019073}
-  m_SizeDelta: {x: 426.77, y: 67.554}
+  m_SizeDelta: {x: 741.00006, y: 53.007797}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &368420005
 MonoBehaviour:
@@ -1246,8 +1246,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -793736282, guid: 681c9b6a2999f53408afff1a492e18eb, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1553,7 +1553,6 @@ MonoBehaviour:
   _inputField: {fileID: 965597716}
   _nextButton: {fileID: 368420005}
   _statusText: {fileID: 935506791}
-  _settingsPanel: {fileID: 47450209585515973}
   _mainMenuButtonText: {fileID: 3316867618836427941}
   _mainMenuButton: {fileID: 3071267524146558088}
   _nameMenuScene: MenuScene
@@ -2097,7 +2096,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.55
+  m_fontSize: 41
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2580,7 +2579,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "\u0414\u0430\u043B\u044C\u0448\u0435"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2607,13 +2606,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 47.4
+  m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3080,10 +3079,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56
+  m_fontSize: 71.05
   m_fontSizeBase: 56
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -3149,8 +3148,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 401.84, y: -350.27722}
-  m_SizeDelta: {x: 226.42, y: 90.522}
+  m_AnchoredPosition: {x: 377.37, y: -350.27722}
+  m_SizeDelta: {x: 275.37, y: 90.522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1428961373
 GameObject:
@@ -4364,7 +4363,7 @@ RectTransform:
   m_GameObject: {fileID: 170241387096477236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3594218046629951090}
@@ -4373,7 +4372,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2.9139, y: -243.4}
-  m_SizeDelta: {x: 178.00002, y: 191.02809}
+  m_SizeDelta: {x: 224.00002, y: 114.01677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1691530324860485847
 RectTransform:
@@ -4639,7 +4638,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.65
+  m_fontSize: 41
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5115,7 +5114,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1054443863, guid: 681c9b6a2999f53408afff1a492e18eb, type: 3}
+  m_Sprite: {fileID: 1388101901, guid: 681c9b6a2999f53408afff1a492e18eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

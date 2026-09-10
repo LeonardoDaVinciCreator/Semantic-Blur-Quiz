@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Data;
 using Localization;
 using Unity.VisualScripting;
+using UnityEngine;
 
 public enum VerificationResult
 {
@@ -35,6 +36,12 @@ public class QuizVerificationService
 
         foreach(var synKey in currentLevel.synonymsKeys)
         {
+            if(currentLevel.synonymsKeys == null)
+            {
+                Debug.LogError("currentLevel.synonymsKeys -  пустой!!!");
+                return VerificationResult.Wrong;
+            }
+
             if (usedSynonymsKeys != null && usedSynonymsKeys.Contains(synKey))
                 continue;
 

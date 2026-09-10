@@ -40,9 +40,6 @@ namespace Core
 
         [SerializeField] private TMP_Text _statusText;
 
-        [Header("Пауза/Настройки")]
-        [SerializeField] private GameObject _settingsPanel;        
-       
         [SerializeField] private TMP_Text _mainMenuButtonText;
         [SerializeField] private Button _mainMenuButton;        
 
@@ -56,6 +53,7 @@ namespace Core
         [SerializeField] private float _timeLimit = 60f;
         [Header("ui таймера")]
         [SerializeField] private TMP_Text _timerText;
+        
 
         [Header("Объекты завершения")]
         [SerializeField] private TMP_Text _titlePanelEnd;
@@ -69,6 +67,8 @@ namespace Core
         [SerializeField] private TMP_Text _bestScoreValue;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _returnMainMenu;
+
+        private string _timerTextMask;
 
         private float _currentTime;
         private bool _isTimerRunning = false;
@@ -89,8 +89,6 @@ namespace Core
         private bool _isWinAnimation = false;
         private float _targetPixelSize;
         private List<string> _usedSynonymsKeys = new List<string>();    
-
-        private bool _isPaused = false;    
 
         private string _currentReplicaKey = "";
 
@@ -121,6 +119,8 @@ namespace Core
             _progressionService = new QuizProgressionService();
 
             InitUI();
+            _timerTextMask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+
             Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
             InitPanelEnd();
 
@@ -170,8 +170,6 @@ namespace Core
 
             _mainMenuButton.onClick.AddListener(GoToMainMenu);
 
-            //_settingsPanel.SetActive(false);
-
             _titlePanelEnd.gameObject.SetActive(false);
             _timeLabel.gameObject.SetActive(false);
             _timeValue.gameObject.SetActive(false);
@@ -198,9 +196,15 @@ namespace Core
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, _currentReplicaKey);
             }
 
+            _timerTextMask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+
             if (_titlePanelEnd.gameObject.activeSelf)
             {
                 UpdateResultDisplay();
+            }
+            else if (_timerText.gameObject.activeSelf)
+            {
+                UpdateTimerText();
             }
         }
 
@@ -233,8 +237,6 @@ namespace Core
 
         private void Update()
         {
-            if (_isPaused) return;
-
             // Плавное изменение пикселизации на экране
             float currentMatValue = _quizImage.material.GetFloat(_namePixelSize);
             if (Mathf.Abs(currentMatValue - _targetPixelSize) > 0.1f)
@@ -261,7 +263,7 @@ namespace Core
 
         private void Timer()
         {
-            if (_isTimerRunning && !_isPaused)
+            if (_isTimerRunning)
             {
                 _currentTime -= Time.deltaTime;
                 if (_currentTime <= 0f)
@@ -272,8 +274,17 @@ namespace Core
                 }
             }
 
+            if (!_isTimerRunning) return;
+
+            UpdateTimerText();
+        }
+
+        private void UpdateTimerText()
+        {
+            if (!_timerText.gameObject.activeSelf) return;
+
             _timerText.text = string.Format(
-                GetLocalizedString(_uiConfig.EndPanel.TimerTextKey),
+                _timerTextMask,
                 Mathf.Ceil(_currentTime)
             );
         }
@@ -286,7 +297,7 @@ namespace Core
             _nextButton.gameObject.SetActive(false);
 
             _quizImage.gameObject.SetActive(false);
-            _statusText.gameObject.SetActive(false);
+            //_statusText.gameObject.SetActive(false);
             _timerText.gameObject.SetActive(false);
 
             _titlePanelEnd.gameObject.SetActive(true);
@@ -358,8 +369,8 @@ namespace Core
             float bestTime = PlayerPrefs.GetFloat("BestTime", float.MaxValue);
             if(time<bestTime) PlayerPrefs.SetFloat("BestTime", time);
 
-            float bestScore = PlayerPrefs.GetFloat("BestScore", 0);
-            if(score > bestScore) PlayerPrefs.SetFloat("BestScore", score);
+            float bestScore = PlayerPrefs.GetInt("BestScore", 0);
+            if(score > bestScore) PlayerPrefs.SetInt("BestScore", score);
 
             PlayerPrefs.Save();
             Debug.Log(time + " " + score);
@@ -464,6 +475,10 @@ namespace Core
             {
                 _quizImage.sprite = levelSprite;
             }
+            else
+            {
+                Debug.LogError("_quizImage.sprite не найден!!!");
+            }
 
             _nextButton.gameObject.SetActive(false);
             _inputField.gameObject.SetActive(true);
@@ -481,34 +496,7 @@ namespace Core
         {
             _currentLevelIndex++;
             LoadLevel(_currentLevelIndex);
-        }
-
-        private void OpenSettingsPanel()
-        {
-            _settingsPanel.SetActive(true);
-            _isPaused = true;
-            Time.timeScale = 0f;
-
-            _inputField.DeactivateInputField();
-            _inputField.interactable = false;
-            _nextButton.interactable = false;            
-        }
-
-        private void CloseSettingsPanel()
-        {
-            _settingsPanel.SetActive(false);
-            _isPaused = false;
-            Time.timeScale = 1f;
-
-            _inputField.interactable = true;
-            _nextButton.interactable = true;
-
-            // Если поле ввода активно (не скрыто после победы), возврат фокуса
-            if (_inputField.gameObject.activeSelf)
-            {
-                _inputField.ActivateInputField();
-            }
-        }
+        }        
 
         private void GoToMainMenu()
         {

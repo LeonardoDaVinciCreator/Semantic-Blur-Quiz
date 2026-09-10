@@ -285,7 +285,7 @@ TextureImporter:
         width: 551
         height: 100
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -294,6 +294,28 @@ TextureImporter:
       bones: []
       spriteID: 34244b78b8577b144895f7d195998f69
       internalID: -1507953727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: block22
+      rect:
+        serializedVersion: 2
+        x: 1559
+        y: 231
+        width: 224
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d4fdc97a727bd9459ad1587a1c4f6b8
+      internalID: 1388101901
       vertices: []
       indices: 
       edges: []
@@ -319,6 +341,7 @@ TextureImporter:
       UI_5: -2062602008
       block 1: -703687353
       block2: 1054443863
+      block22: 1388101901
       circle slider: -1255105898
       slider: -358879269
       tv: 333826238

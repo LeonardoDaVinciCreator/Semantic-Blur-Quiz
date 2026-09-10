@@ -1,4 +1,5 @@
 using Manager;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Core
@@ -7,7 +8,19 @@ namespace Core
     {
         [Header("Audio Sources")]
         [SerializeField] private AudioSource _musicSource;
+        [SerializeField] private AudioSource _soundClickSource;
         [SerializeField] private AudioSource _soundSource;
+
+        [Header("Music Sound")]
+        [SerializeField] private AudioClip _soundMusic;
+
+        [Header("Audio Sound")]
+        [SerializeField] private AudioClip _soundClick;
+        [Header("Sound answer")]
+        [SerializeField] private AudioClip _soundIgnore;
+        [SerializeField] private AudioClip _soundCloseMatch;
+        [SerializeField] private AudioClip _soundWin;
+        [SerializeField] private AudioClip _soundWrong;
 
         [Header("Default Volumes")]
         [SerializeField] private float _defaultMusicVolume = 0.5f;
@@ -56,10 +69,43 @@ namespace Core
             PlayerPrefs.Save();
         }
 
-        public void PlaySound(AudioClip clip)
+        private void PlaySound(AudioClip clip, AudioSource audio)
         {
-            if (_soundSource != null && clip != null)
-                _soundSource.PlayOneShot(clip);
+            if (audio != null && clip != null)
+                audio.PlayOneShot(clip);
+        }
+
+        public void PlayMusic()
+        {
+            PlaySound(_soundMusic, _musicSource);
+        }
+
+        public void PlayClick()
+        {
+            PlaySound(_soundClick, _soundClickSource);
+        }
+
+        public void PlaySoundAnswer(VerificationResult result)
+        {
+            switch(result)
+            {
+                case VerificationResult.Ignore:
+                    PlaySound(_soundIgnore, _soundSource);
+                    break;
+
+                case VerificationResult.Win:
+                    PlaySound(_soundCloseMatch, _soundSource);
+                    break;
+
+                case VerificationResult.CloseMatch:
+                    PlaySound(_soundWin, _soundSource);
+                    break;
+
+                case VerificationResult.Wrong:
+                    PlaySound(_soundWrong, _soundSource);
+                    break;
+            }
+                
         }
     }
 }
