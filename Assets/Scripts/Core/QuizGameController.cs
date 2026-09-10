@@ -383,8 +383,8 @@ namespace Core
                 randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
-                _statusText.color = Color.gray;
                 _inputField.text = "";
+                _statusText.fontStyle = FontStyles.Normal;
                 _inputField.ActivateInputField();
                 return;
             }
@@ -396,7 +396,7 @@ namespace Core
             switch (result)
             {
                 case VerificationResult.Win:
-                    _statusText.color = Color.green;
+                    _statusText.fontStyle = FontStyles.Bold;
                     randomKey = _replicasSO.ReplicasData.Answers.Win.Keys.GetRandomItem()?.key ?? "";
 
                     _inputField.DeactivateInputField();
@@ -409,12 +409,12 @@ namespace Core
                     break;
 
                 case VerificationResult.CloseMatch:
-                    _statusText.color = Color.yellow;
+                    _statusText.fontStyle = FontStyles.Italic;
                     randomKey = _replicasSO.ReplicasData.Answers.CloseMatch.Keys.GetRandomItem()?.key ?? "";
                     break;
 
                 case VerificationResult.Wrong:
-                    _statusText.color = Color.red;
+                    _statusText.fontStyle = FontStyles.Normal;
                     randomKey = _replicasSO.ReplicasData.Answers.Wrong.Keys.GetRandomItem()?.key ?? "";
                     break;
             }
@@ -440,8 +440,7 @@ namespace Core
                 _inputField.DeactivateInputField();
                 _inputField.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);                
-
-                _statusText.color = Color.green;
+                _statusText.fontStyle = FontStyles.Normal;
                 randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
