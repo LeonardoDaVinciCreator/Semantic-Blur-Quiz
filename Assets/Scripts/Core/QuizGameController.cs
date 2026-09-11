@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using AtributeEditor;
 using System;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem.Interactions;
 
 namespace Core
 {
@@ -47,12 +46,7 @@ namespace Core
         [SerializeField] private string _nameMenuScene;
 
         [Header("Локализация UI")]
-        [SerializeField] private UIConfigSO _uiConfig;
-
-        [Header("Таймер")]
-        [SerializeField] private float _timeLimit = 60f;
-        [Header("ui таймера")]
-        [SerializeField] private TMP_Text _timerText;
+        [SerializeField] private UIConfigSO _uiConfig;        
         
 
         [Header("Объекты завершения")]
@@ -68,12 +62,12 @@ namespace Core
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _returnMainMenu;
 
-        private string _timerTextMask;
+        [Header("Контроллеры")]
+        [SerializeField] private TimerController _timerController;
 
-        private float _currentTime;
-        private bool _isTimerRunning = false;
+               
         private float _startTime;
-        
+        private float _totalTime;
         
         private QuizJsonService _jsonService;
 
@@ -94,7 +88,8 @@ namespace Core
 
         private void Start()
         {
-            Debug.Log(GameManager.Instance.TableName);
+            if (GameManager.Instance != null)
+                Debug.Log(GameManager.Instance.TableName);
             
 
             _quizImage.material = Instantiate(_quizImage.material); // чтобы разблокировать изменения данных для материала
@@ -118,34 +113,46 @@ namespace Core
 
             _progressionService = new QuizProgressionService();
 
-            InitUI();
-            _timerTextMask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+            InitUI();            
 
             Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
             InitPanelEnd();
 
             _inputField.onSubmit.AddListener(OnInputFieldSubmit);
             _nextButton.onClick.AddListener(NextLevel);
-
-
             
+            InitializeControllers();
 
-            LoadLevel(_currentLevelIndex);
+            LoadLevel(_currentLevelIndex);                      
+        }
 
-            _currentTime = _timeLimit;
-            _isTimerRunning = true;
-            _startTime = Time.time;
+        private void InitializeControllers()
+        {
+            if(_timerController == null)
+            {
+                Debug.LogError("[QuizGameController] TimerController не назначен!");
+                return;
+            }
+            else
+            {
+                _timerController.UpdateTextMask(GetLocalizedString(_uiConfig.EndPanel.TimerTextKey));
+                _timerController.OnTimerFinished += HandleTimerFinished;
+
+                _startTime = Time.time;
+                _timerController.StartTimer(); 
+            }             
         }
 
         private void OnDestroy()
         {
+            if (_timerController != null)
+                _timerController.OnTimerFinished -= HandleTimerFinished;
+
             _cache.Dispose();
 
             if (Localization.LanguageManager.Instance != null)
                 Localization.LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
-        }
-
-        
+        }        
 
         private void RefreshAllUI()
         {
@@ -194,26 +201,26 @@ namespace Core
             if (!string.IsNullOrEmpty(_currentReplicaKey))
             {
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, _currentReplicaKey);
-            }
+            }            
 
-            _timerTextMask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+            //обновление таймера
+            if (_timerController != null)
+            {
+                string mask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+                _timerController.UpdateTextMask(mask);
+            }
 
             if (_titlePanelEnd.gameObject.activeSelf)
             {
                 UpdateResultDisplay();
-            }
-            else if (_timerText.gameObject.activeSelf)
-            {
-                UpdateTimerText();
-            }
+            }            
         }
 
         private void UpdateResultDisplay()
-        {
-            float totalTime = Time.time - _startTime;
+        {            
             int totalLevels = _jsonService.GetTotalLevels();
 
-            _timeValue.text = string.Format(GetLocalizedString(_uiConfig.EndPanel.TimeTextKey), totalTime);
+            _timeValue.text = string.Format(GetLocalizedString(_uiConfig.EndPanel.TimeTextKey), _totalTime);
             _scoreValue.text = string.Format(GetLocalizedString(_uiConfig.EndPanel.ScoreTextKey), _correctCount, totalLevels);
 
             UpdateBestResultsUI();
@@ -229,7 +236,7 @@ namespace Core
             SceneManager.LoadScene(_nameMenuScene);
         }
 
-        private string GetLocalizedString(string key)
+        public string GetLocalizedString(string key)
         {
             if (string.IsNullOrEmpty(key)) return string.Empty;
             return Localization.LanguageManager.Instance.GetWordByKey(_tableNameUI, key);
@@ -256,49 +263,20 @@ namespace Core
                 float nextValue = Mathf.Lerp(currentMatValue, _targetPixelSize, Time.deltaTime * speed);
                 _quizImage.material.SetFloat(_namePixelSize, nextValue);
                 _pixelStat.CurrentPixelSize = nextValue;
-            }
+            }            
+        }        
 
-            Timer();
-        }
-
-        private void Timer()
-        {
-            if (_isTimerRunning)
-            {
-                _currentTime -= Time.deltaTime;
-                if (_currentTime <= 0f)
-                {
-                    _currentTime = 0f;
-                    _isTimerRunning = false;
-                    OnTimeEnd(true);
-                }
-            }
-
-            if (!_isTimerRunning) return;
-
-            UpdateTimerText();
-        }
-
-        private void UpdateTimerText()
-        {
-            if (!_timerText.gameObject.activeSelf) return;
-
-            _timerText.text = string.Format(
-                _timerTextMask,
-                Mathf.Ceil(_currentTime)
-            );
-        }
-
-        private void OnTimeEnd(bool timeOut)
-        {
-            _isTimerRunning = false;
+        private void OnGameFinished(bool timeOut)
+        {           
+            //_timerController.PauseTimer();
+            _timerController.SetVisible(false);//теперь пауза такая
+            _totalTime = Time.time - _startTime;
 
             _inputField.gameObject.SetActive(false);
             _nextButton.gameObject.SetActive(false);
 
             _quizImage.gameObject.SetActive(false);
-            //_statusText.gameObject.SetActive(false);
-            _timerText.gameObject.SetActive(false);
+            //_statusText.gameObject.SetActive(false);            
 
             _titlePanelEnd.gameObject.SetActive(true);
             _timeLabel.gameObject.SetActive(true);
@@ -312,13 +290,12 @@ namespace Core
 
             string titleKey = timeOut ? _uiConfig.EndPanel.TitlegGameOverKey : _uiConfig.EndPanel.TitleCompleteKey;
             _titlePanelEnd.text = GetLocalizedString(titleKey);
-
-            float totalTime = Time.time - _startTime;
+            
             int totalLevels = _jsonService.GetTotalLevels();
 
             _timeValue.text = string.Format(
                 GetLocalizedString(_uiConfig.EndPanel.TimeTextKey),
-                totalTime
+                _totalTime
             );
 
              _scoreValue.text = string.Format(
@@ -329,7 +306,7 @@ namespace Core
 
             UpdateBestResultsUI();
 
-            SaveBestResult(totalTime, _correctCount);
+            SaveBestResult(_totalTime, _correctCount);
         }
 
         private void UpdateBestResultsUI()
@@ -456,7 +433,7 @@ namespace Core
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
 
-                OnTimeEnd(false);
+                OnGameFinished(false);
 
                 return;
             }
@@ -521,5 +498,12 @@ namespace Core
                 _targetPixelSize = _pixelStat.CurrentPixelSize;
             }
         }
+    
+        private void HandleTimerFinished()
+        {
+            OnGameFinished(true);
+        }
+
+
     }
 }
