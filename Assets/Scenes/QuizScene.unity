@@ -1557,18 +1557,10 @@ MonoBehaviour:
   _mainMenuButton: {fileID: 3071267524146558088}
   _nameMenuScene: MenuScene
   _uiConfig: {fileID: 11400000, guid: eee792554b7a9f649aa0a72b8962b26a, type: 2}
-  _titlePanelEnd: {fileID: 316426060}
-  _timeLabel: {fileID: 53505981}
-  _timeValue: {fileID: 1548280160}
-  _scoreLabel: {fileID: 1141626997}
-  _scoreValue: {fileID: 57966303}
-  _bestTimeLabel: {fileID: 349274447}
-  _bestTimeValue: {fileID: 184369580}
-  _bestScoreLabel: {fileID: 1690788995}
-  _bestScoreValue: {fileID: 1645394449}
   _restartButton: {fileID: 318609168}
   _returnMainMenu: {fileID: 3071267524146558088}
   _timerController: {fileID: 1291646304}
+  _endPanelController: {fileID: 580494211}
 --- !u!4 &497803927
 Transform:
   m_ObjectHideFlags: 0
@@ -1645,6 +1637,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 580494210}
+  - component: {fileID: 580494212}
+  - component: {fileID: 580494211}
   m_Layer: 5
   m_Name: PanelEnd
   m_TagString: Untagged
@@ -1673,6 +1667,43 @@ RectTransform:
   m_AnchoredPosition: {x: -126.591064, y: 46.26247}
   m_SizeDelta: {x: 732.5485, y: 475.5552}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &580494211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580494209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e0efbd45c9e83d45a95a8648223d7fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndPanel.EndPanelController
+  _view: {fileID: 580494212}
+  _maskConfig: {fileID: 11400000, guid: eee792554b7a9f649aa0a72b8962b26a, type: 2}
+  _uiTableName: UITable
+--- !u!114 &580494212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580494209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a872d906b36e34a45ac986b901a2d12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndPanel.EndPanelView
+  _root: {fileID: 580494209}
+  _title: {fileID: 316426060}
+  _timeLabel: {fileID: 53505981}
+  _timeValue: {fileID: 1548280160}
+  _scoreLabel: {fileID: 1141626997}
+  _scoreValue: {fileID: 57966303}
+  _bestTimeLabel: {fileID: 349274447}
+  _bestTimeValue: {fileID: 184369580}
+  _bestScoreLabel: {fileID: 1690788995}
+  _bestScoreValue: {fileID: 1645394449}
 --- !u!1 &596802454
 GameObject:
   m_ObjectHideFlags: 0
