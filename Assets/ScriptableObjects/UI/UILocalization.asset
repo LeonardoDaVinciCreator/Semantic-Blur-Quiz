@@ -28,7 +28,7 @@ MonoBehaviour:
     MusicLabel: ui_settings_music
     SoundLabel: ui_settings_sound
     ContinueButton: ui_settings_continue
-    MainMenuButton: ui_settings_main_menu
+    MainMenuButton: menu_button
   EndPanel:
     NameTable: UI
     TitlegGameOverKey: ui_finish_title
@@ -43,3 +43,4 @@ MonoBehaviour:
     BestScoreTextKey: best_score_text
     RestartButtonKey: restart_button
     MenuButtonKey: menu_button
+    TimerTextKey: timer_text

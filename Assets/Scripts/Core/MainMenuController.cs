@@ -18,6 +18,8 @@ namespace Core
 
         private void Start()
         {
+            if (AudioManager.Instance != null) AudioManager.Instance.StopQuizNoise();
+
             BuildMenu();
 
             if (Localization.LanguageManager.Instance != null)

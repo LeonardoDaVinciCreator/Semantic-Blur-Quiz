@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 701711634554857307}
   - component: {fileID: 7141107290718281239}
   - component: {fileID: 8737141735843937947}
+  - component: {fileID: 6087245454363981847}
   m_Layer: 5
   m_Name: ThemeButtom
   m_TagString: Untagged
@@ -273,3 +274,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Core.ThemeMenuButton
   _nameText: {fileID: 1820313796889457964}
   _button: {fileID: 7141107290718281239}
+--- !u!114 &6087245454363981847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608925494036973507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d3d322091a2ba44b5cf1ef2a634d74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Components.ButtonClickSound

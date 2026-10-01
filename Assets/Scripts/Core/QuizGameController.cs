@@ -79,6 +79,9 @@ namespace Core
 
         private void Start()
         {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.StartQuizNoise();
+
             if (GameManager.Instance != null)
                 Debug.Log(GameManager.Instance.TableName);
             
@@ -143,6 +146,9 @@ namespace Core
 
             if (Localization.LanguageManager.Instance != null)
                 Localization.LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.StopQuizNoise();
         }        
 
         private void RefreshAllUI()
@@ -234,7 +240,7 @@ namespace Core
 
                 float nextValue = Mathf.Lerp(currentMatValue, _targetPixelSize, Time.deltaTime * speed);
                 _quizImage.material.SetFloat(_namePixelSize, nextValue);
-                _pixelStat.CurrentPixelSize = nextValue;
+                _pixelStat.CurrentPixelSize = nextValue;                
             }            
         }        
 
@@ -274,6 +280,9 @@ namespace Core
 
             if (result == VerificationResult.Ignore)
             {
+                if (Core.AudioManager.Instance != null)
+                    Core.AudioManager.Instance.PlaySoundAnswer(result);
+
                 randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
                 _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
@@ -311,6 +320,11 @@ namespace Core
                     _statusText.fontStyle = FontStyles.Normal;
                     randomKey = _replicasSO.ReplicasData.Answers.Wrong.Keys.GetRandomItem()?.key ?? "";
                     break;
+            }
+
+            if (Core.AudioManager.Instance != null)
+            {
+                Core.AudioManager.Instance.PlaySoundAnswer(result);
             }
 
             _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
@@ -377,6 +391,11 @@ namespace Core
 
         private void NextLevel()
         {
+            if (Core.AudioManager.Instance != null)
+            {
+                Core.AudioManager.Instance.ResetNoiseForNewQuestion();
+            }
+            
             _currentLevelIndex++;
             LoadLevel(_currentLevelIndex);
         }        

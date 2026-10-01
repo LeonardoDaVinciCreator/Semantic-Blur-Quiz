@@ -8,8 +8,6 @@ namespace EndPanel
         [SerializeField] private EndPanelView _view;
         [SerializeField] private UIConfigSO _maskConfig;
 
-        [SerializeField] private string _uiTableName = "UITable";
-
         private IEndPanel _model;
 
         private float _time;
