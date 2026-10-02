@@ -43,6 +43,7 @@ namespace Core
         [SerializeField] private TMP_Text _statusText;
 
         [SerializeField] private TMP_Text _mainMenuButtonText;
+        
         [SerializeField] private Button _mainMenuButton;        
 
         [Header("Сцена меню")]
@@ -55,6 +56,10 @@ namespace Core
         [Header("Кнопки на TV")]
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _returnMainMenu;
+
+        [SerializeField] private TMP_Text _restartButtonText;
+        [SerializeField] private TMP_Text _returnMainMenuText;
+        [SerializeField] private TMP_Text _nextButtonText;
 
         [Header("Контроллеры")]
         [SerializeField] private TimerController _timerController;
@@ -153,7 +158,6 @@ namespace Core
             if (AudioManager.Instance != null)
                 AudioManager.Instance.StopQuizNoise();
         }        
-
         private void RefreshAllUI()
         {
             
@@ -161,10 +165,11 @@ namespace Core
 
             
 
-            _restartButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.EndPanel.RestartButtonKey);
-            _returnMainMenu.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
 
-            _nextButton.GetComponentInChildren<TMP_Text>().text = GetLocalizedString(_uiConfig.Game.NextButton);
+            _restartButtonText.text = GetLocalizedString(_uiConfig.EndPanel.RestartButtonKey);
+            _returnMainMenuText.text = GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
+
+            _nextButtonText.text = GetLocalizedString(_uiConfig.Game.NextButton);
         }
 
         private void InitUI()

@@ -1580,6 +1580,9 @@ MonoBehaviour:
   _nextButton: {fileID: 368420005}
   _statusText: {fileID: 935506791}
   _mainMenuButtonText: {fileID: 3316867618836427941}
+  _restartButtonText: {fileID: 936845655}
+  _returnMainMenuText: {fileID: 3316867618836427941}
+  _nextButtonText: {fileID: 1119323696}
   _mainMenuButton: {fileID: 3071267524146558088}
   _nameMenuScene: MenuScene
   _uiConfig: {fileID: 11400000, guid: eee792554b7a9f649aa0a72b8962b26a, type: 2}
