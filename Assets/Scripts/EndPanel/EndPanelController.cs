@@ -1,4 +1,5 @@
 using Data;
+using Localization;
 using UnityEngine;
 
 namespace EndPanel
@@ -87,7 +88,7 @@ namespace EndPanel
         {
             if(string.IsNullOrEmpty(key)) return string.Empty;
 
-            return Localization.LanguageManager.Instance.GetWordByKey(_maskConfig.EndPanel.NameTable, key);
+            return LocalizationHelper.Get(_maskConfig.EndPanel.NameTable, key);
         }
     }
 }

@@ -4,6 +4,8 @@ using TMPro;
 using Data;
 using System;
 
+using Localization;
+
 namespace Core
 {
     public class ThemeMenuButton : MonoBehaviour
@@ -19,7 +21,7 @@ namespace Core
             _data = data;
             _onThemeSelected = onThemeSelected;
 
-            _nameText.text = Localization.LanguageManager.Instance.GetWordByKey(_data.TableName, _data.ThemeNameKey);
+            _nameText.text = LocalizationHelper.Get(_data.TableName, _data.ThemeNameKey);
             
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(SelectTheme);
@@ -34,7 +36,7 @@ namespace Core
         {
             if (_data != null)
             {
-                _nameText.text = Localization.LanguageManager.Instance.GetWordByKey(_data.TableName, _data.ThemeNameKey);
+                _nameText.text = LocalizationHelper.Get(_data.TableName, _data.ThemeNameKey);
             }
         }
     }

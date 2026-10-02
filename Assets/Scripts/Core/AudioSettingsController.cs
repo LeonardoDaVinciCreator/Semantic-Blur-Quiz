@@ -79,7 +79,6 @@ public class AudioSettingsController : MonoBehaviour
 
     private string GetLocalizedString(string key)
     {
-        if (string.IsNullOrEmpty(key)) return string.Empty;
-        return LanguageManager.Instance.GetWordByKey(_tableNameUI, key);
+        return LocalizationHelper.Get(_tableNameUI, key);
     }
 }

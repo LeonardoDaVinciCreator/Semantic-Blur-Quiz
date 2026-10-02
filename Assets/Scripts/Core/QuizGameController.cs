@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using AtributeEditor;
 using UnityEngine.SceneManagement;
 using EndPanel;
+using Localization;
 
 namespace Core
 {
@@ -185,7 +186,7 @@ namespace Core
 
             if (!string.IsNullOrEmpty(_currentReplicaKey))
             {
-                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, _currentReplicaKey);
+                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, _currentReplicaKey);
             }            
 
             //обновление таймера
@@ -217,7 +218,7 @@ namespace Core
         public string GetLocalizedString(string key)
         {
             if (string.IsNullOrEmpty(key)) return string.Empty;
-            return Localization.LanguageManager.Instance.GetWordByKey(_tableNameUI, key);
+            return LocalizationHelper.Get(_tableNameUI, key);
         }
 
         private void Update()
@@ -284,7 +285,7 @@ namespace Core
                     Core.AudioManager.Instance.PlaySoundAnswer(result);
 
                 randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
-                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
                 _inputField.text = "";
                 _statusText.fontStyle = FontStyles.Normal;
@@ -327,7 +328,7 @@ namespace Core
                 Core.AudioManager.Instance.PlaySoundAnswer(result);
             }
 
-            _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+            _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
             _currentReplicaKey = randomKey;
 
             _inputField.text = "";
@@ -350,7 +351,7 @@ namespace Core
                 _nextButton.gameObject.SetActive(false);                
                 _statusText.fontStyle = FontStyles.Normal;
                 randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
-                _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
 
                 OnGameFinished(false);
@@ -382,7 +383,7 @@ namespace Core
 
             randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
 
-            _statusText.text = Localization.LanguageManager.Instance.GetWordByKey(_tableNameReplicas, randomKey);
+            _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
             _currentReplicaKey = randomKey;
 
             _inputField.text = "";
