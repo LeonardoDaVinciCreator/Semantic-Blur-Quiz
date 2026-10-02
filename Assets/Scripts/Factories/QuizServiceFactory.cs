@@ -11,15 +11,15 @@ namespace Services
     public class QuizServiceFactory : IQuizServiceFactory
     {
         public IQuizJsonService CreateJsonService() 
-            => new Json.QuizJsonService();
+            => new QuizJsonService();
 
-        public Verification.IWordsCache CreateWordsCache() 
-            => new Verification.WordsCache();
+        public IWordsCache CreateWordsCache() 
+            => new WordsCache();
 
-        public Verification.IVerificationService CreateVerificationService(Verification.IWordsCache cache) 
-            => new Verification.QuizVerificationService(cache);
+        public IVerificationService CreateVerificationService(IWordsCache cache) 
+            => new QuizVerificationService(cache);
 
-        public Progression.IProgressionService CreateProgressionService() 
-            => new Progression.QuizProgressionService();
+        public IProgressionService CreateProgressionService() 
+            => new QuizProgressionService();
     }
 }

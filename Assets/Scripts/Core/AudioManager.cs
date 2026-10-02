@@ -129,7 +129,6 @@ namespace Core
             if (_staticNoiseSource != null)
             {                
                 _staticNoiseSource.volume = _musicVolume * _currentNoiseIntensity;
-                Debug.Log($"[Audio DEBUG] Текущая громкость шума: {_staticNoiseSource.volume}, Интенсивность: {_currentNoiseIntensity}");
             }
         }
 
