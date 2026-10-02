@@ -8,6 +8,8 @@ namespace Json
     {
         private LevelList _gameData;
 
+        private static readonly System.Random _rng = new System.Random();
+
         public void Initialize(TextAsset jsonFile)
         {
             if (jsonFile != null)
@@ -33,11 +35,10 @@ namespace Json
         {
             if (_gameData?.levels == null) return;
             int n = _gameData.levels.Count;
-            System.Random rng = new System.Random();
             while (n > 1)
             {
                 n--;
-                int k = rng.Next(n + 1);
+                int k = _rng.Next(n + 1);
                 var temp = _gameData.levels[k];
                 _gameData.levels[k] = _gameData.levels[n];
                 _gameData.levels[n] = temp;

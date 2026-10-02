@@ -2,40 +2,43 @@
 using System.Collections.Generic;
 using Localization;
 
-public class WordsCache : IWordsCache
+namespace Verification
 {
-    private Dictionary<string, string[]> _cache = new ();
-
-    public WordsCache()
+    public class WordsCache : IWordsCache
     {
-        if (LanguageManager.Instance != null)
+        private Dictionary<string, string[]> _cache = new ();
+
+        public WordsCache()
         {
-            LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
+            if (LanguageManager.Instance != null)
+            {
+                LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
+            }
         }
-    }
 
-    public void Dispose()
-    {
-        if (LanguageManager.Instance != null)
-            LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
-    }
-
-    public string[] GetCache(string tableName, string key)
-    {
-        string cacheKey = $"{tableName}_{key}";
-
-        if (!_cache.ContainsKey(cacheKey))
+        public void Dispose()
         {
-            _cache[cacheKey] = LanguageManager.Instance.GetWordsByKey(tableName, key);
+            if (LanguageManager.Instance != null)
+                LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
         }
-        
-        return _cache[cacheKey];
-    }
 
-    public void Clear() => _cache.Clear();
+        public string[] GetCache(string tableName, string key)
+        {
+            string cacheKey = $"{tableName}_{key}";
 
-    private void OnLanguageChanged(string langCode)
-    {
-        Clear();
+            if (!_cache.ContainsKey(cacheKey))
+            {
+                _cache[cacheKey] = LanguageManager.Instance.GetWordsByKey(tableName, key);
+            }
+            
+            return _cache[cacheKey];
+        }
+
+        public void Clear() => _cache.Clear();
+
+        private void OnLanguageChanged(string langCode)
+        {
+            Clear();
+        }
     }
 }

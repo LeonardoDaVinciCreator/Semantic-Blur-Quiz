@@ -1,6 +1,9 @@
 using Data;
+using Json;
 using Localization;
 using Progression;
+using Services;
+using Verification;
 using UnityEngine;
 
 namespace Services
@@ -10,13 +13,13 @@ namespace Services
         public IQuizJsonService CreateJsonService() 
             => new Json.QuizJsonService();
 
-        public IWordsCache CreateWordsCache() 
-            => new WordsCache();
+        public Verification.IWordsCache CreateWordsCache() 
+            => new Verification.WordsCache();
 
-        public IVerificationService CreateVerificationService(IWordsCache cache) 
+        public Verification.IVerificationService CreateVerificationService(Verification.IWordsCache cache) 
             => new Verification.QuizVerificationService(cache);
 
-        public IProgressionService CreateProgressionService() 
+        public Progression.IProgressionService CreateProgressionService() 
             => new Progression.QuizProgressionService();
     }
 }

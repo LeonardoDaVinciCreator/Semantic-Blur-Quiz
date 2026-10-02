@@ -1,9 +1,11 @@
 using Localization;
 using System.Collections.Generic;
 
-public interface IWordsCache
+namespace Verification
 {
-    string[] GetCache(string tableName, string key);
-    void Dispose();
-    void Clear();
+    public interface IWordsCache
+    {
+        string[] GetCache(string tableName, string key);
+        void Dispose();
+    }
 }

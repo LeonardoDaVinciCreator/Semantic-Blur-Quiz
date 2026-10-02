@@ -9,6 +9,8 @@ using Progression;
 using Localization;
 using EndPanel;
 using Json;
+using Verification;
+using Services;
 
 namespace Core
 {
@@ -99,15 +101,14 @@ namespace Core
             // пример пути Resources/Themes/Fruits/levels.json
             TextAsset textAsset = Resources.Load<TextAsset>($"{_nameFolder}/levels");
 
-            _jsonService = new Json.QuizJsonService();
+            var factory = new QuizServiceFactory();
+            _jsonService = factory.CreateJsonService();
             _jsonService.Initialize(textAsset);
             _jsonService.ShuffleLevels();
 
-            WordsCache wordsCache = new WordsCache();
-            _cache = wordsCache;
-            _verificationService = new QuizVerificationService(wordsCache);
-
-            _progressionService = new Progression.QuizProgressionService();
+            _cache = factory.CreateWordsCache();
+            _verificationService = factory.CreateVerificationService(_cache);
+            _progressionService = factory.CreateProgressionService();
 
             InitUI();            
 
