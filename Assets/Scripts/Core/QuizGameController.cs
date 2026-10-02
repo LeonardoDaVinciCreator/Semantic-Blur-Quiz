@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Json;
-using Data;
-using Progression;
 using System.Collections.Generic;
 using AtributeEditor;
 using UnityEngine.SceneManagement;
-using EndPanel;
+using Data;
+using Progression;
 using Localization;
+using EndPanel;
+using Json;
 
 namespace Core
 {
@@ -61,11 +61,11 @@ namespace Core
         private float _startTime;
         private float _totalTime;
         
-        private QuizJsonService _jsonService;
+        private IQuizJsonService _jsonService;
 
-        private WordsCache _cache;
-        private QuizVerificationService _verificationService;
-        private QuizProgressionService _progressionService;
+        private IWordsCache _cache;
+        private IVerificationService _verificationService;
+        private IProgressionService _progressionService;
 
         private string _namePixelSize = "_PixelSize";
         private PixelizationStat _pixelStat = new PixelizationStat();
@@ -99,14 +99,15 @@ namespace Core
             // пример пути Resources/Themes/Fruits/levels.json
             TextAsset textAsset = Resources.Load<TextAsset>($"{_nameFolder}/levels");
 
-            _jsonService = new QuizJsonService();
+            _jsonService = new Json.QuizJsonService();
             _jsonService.Initialize(textAsset);
             _jsonService.ShuffleLevels();
 
-            _cache = new WordsCache();
-            _verificationService = new QuizVerificationService(_cache);
+            WordsCache wordsCache = new WordsCache();
+            _cache = wordsCache;
+            _verificationService = new QuizVerificationService(wordsCache);
 
-            _progressionService = new QuizProgressionService();
+            _progressionService = new Progression.QuizProgressionService();
 
             InitUI();            
 

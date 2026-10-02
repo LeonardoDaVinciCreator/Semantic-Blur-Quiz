@@ -12,7 +12,7 @@ public enum VerificationResult
     Ignore
 }
 
-public class IVerificationService
+public interface IVerificationService
 {
-    public VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys);
+    VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys);
 }

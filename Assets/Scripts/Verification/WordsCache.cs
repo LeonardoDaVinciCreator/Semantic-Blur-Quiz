@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Localization;
 
-public class WordsCache
+public class WordsCache : IWordsCache
 {
     private Dictionary<string, string[]> _cache = new ();
 

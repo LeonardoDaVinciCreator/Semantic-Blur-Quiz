@@ -5,16 +5,7 @@ using Localization;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum VerificationResult
-{
-    Wrong,       // Красный
-    CloseMatch,  // Желтый
-    Win,          // Зеленый
-
-    Ignore       // Ничего не делать
-}
-
-public class QuizVerificationService
+public class QuizVerificationService : IVerificationService
 {
     private WordsCache _formsCache;
     

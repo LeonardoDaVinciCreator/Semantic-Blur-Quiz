@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Json
 {
-    public class QuizJsonService
+    public class QuizJsonService : IQuizJsonService
     {
         private LevelList _gameData;
 

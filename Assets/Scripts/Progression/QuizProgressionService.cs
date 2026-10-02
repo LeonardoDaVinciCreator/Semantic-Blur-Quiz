@@ -4,19 +4,7 @@ using UnityEngine.Rendering;
 
 namespace Progression
 {
-    /// <summary>
-    /// данные получать из шейдера 1 раз, потом использовать сохраненные данные
-    /// </summary>
-    [Serializable]
-    public class PixelizationStat
-    {
-        public float MinPixelSize;
-        public float CurrentPixelSize;
-        public float MaxPixelSize;
-        
-    }
-    
-    public class QuizProgressionService
+    public class QuizProgressionService : IProgressionService
     {
         private int _wrongCount = 0;
 
