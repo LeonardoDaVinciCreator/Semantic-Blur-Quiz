@@ -246,6 +246,9 @@ namespace Core
 
         private void OnGameFinished(bool timeOut)
         {           
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.StopQuizNoise();
+
             //_timerController.PauseTimer();
             _timerController.SetVisible(false);//теперь пауза такая
             _totalTime = Time.time - _startTime;
@@ -253,14 +256,11 @@ namespace Core
             _inputField.gameObject.SetActive(false);
             _nextButton.gameObject.SetActive(false);
 
-            _quizImage.gameObject.SetActive(false);
-            
+            _quizImage.gameObject.SetActive(false);            
             
             int totalLevels = _jsonService.GetTotalLevels();
 
-            _endPanelController.ShowResult(_totalTime, _correctCount, totalLevels, timeOut);
-
-            
+            _endPanelController.ShowResult(_totalTime, _correctCount, totalLevels, timeOut);            
         }
 
         

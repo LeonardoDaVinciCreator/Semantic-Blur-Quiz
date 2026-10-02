@@ -22,7 +22,7 @@ namespace Core
 
         [Header("Audio Sound")]
         [SerializeField] private AudioClip _soundClick;
-        [Header("Sound answer")]
+        [Header("Sound answer(опционально)")]
         [SerializeField] private AudioClip _soundIgnore;
         [SerializeField] private AudioClip _soundCloseMatch;
         [SerializeField] private AudioClip _soundWin;

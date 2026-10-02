@@ -24,6 +24,9 @@ namespace Core
 
             if (Localization.LanguageManager.Instance != null)
                 Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
+
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlayMusic();
         }
 
         private void OnDestroy()
