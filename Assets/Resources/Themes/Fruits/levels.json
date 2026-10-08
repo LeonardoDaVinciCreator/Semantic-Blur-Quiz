@@ -5,7 +5,7 @@
       "imageName": "img_apple",
       "correctWordKey": "word_apple",
       "synonymsKeys": [
-        "syn_fruit", "syn_food", "syn_red", "syn_green", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_tree", "syn_summer"
+        "syn_red", "syn_green", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_tree", "syn_summer"
       ]
     },
     {
@@ -13,7 +13,7 @@
       "imageName": "img_banana",
       "correctWordKey": "word_banana",
       "synonymsKeys": [
-        "syn_fruit", "syn_food", "syn_yellow", "syn_long", "syn_sweet", "syn_palm", "syn_exotic", "syn_monkey", "syn_soft", "syn_peel"
+        "syn_yellow", "syn_long", "syn_sweet", "syn_palm", "syn_exotic", "syn_monkey", "syn_soft", "syn_peel"
       ]
     },
     {
@@ -21,7 +21,7 @@
       "imageName": "img_orange",
       "correctWordKey": "word_orange",
       "synonymsKeys": [
-        "syn_fruit", "syn_food", "syn_orange_color", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_citrus", "syn_mandarin_like", "syn_slice"
+        "syn_orange_color", "syn_round", "syn_juice", "syn_sweet", "syn_sour", "syn_citrus", "syn_mandarin_like", "syn_slice"
       ]
     },
     {
@@ -29,7 +29,119 @@
       "imageName": "img_pear",
       "correctWordKey": "word_pear",
       "synonymsKeys": [
-        "syn_fruit", "syn_food", "syn_yellow", "syn_green", "syn_apple_like", "syn_soft", "syn_tree", "syn_sweet", "syn_juice", "syn_oval"
+        "syn_yellow", "syn_green", "syn_apple_like", "syn_soft", "syn_tree", "syn_sweet", "syn_juice", "syn_oval"
+      ]
+    },
+    {
+      "id": 5,
+      "imageName": "img_avocado",
+      "correctWordKey": "word_avocado",
+      "synonymsKeys": [
+        "syn_green", "syn_soft", "syn_exotic", "syn_tree", "syn_healthy", "syn_oval"
+      ]
+    },
+    {
+      "id": 6,
+      "imageName": "img_blueberry",
+      "correctWordKey": "word_blueberry",
+      "synonymsKeys": [
+        "syn_berry", "syn_small", "syn_round", "syn_sweet", "syn_sour", "syn_juice"
+      ]
+    },
+    {
+      "id": 7,
+      "imageName": "img_cherry",
+      "correctWordKey": "word_cherry",
+      "synonymsKeys": [
+        "syn_berry", "syn_red", "syn_round", "syn_sweet", "syn_sour", "syn_stone"
+      ]
+    },
+    {
+      "id": 8,
+      "imageName": "img_grape",
+      "correctWordKey": "word_grape",
+      "synonymsKeys": [
+        "syn_berry", "syn_green", "syn_round", "syn_sweet", "syn_sour", "syn_juice"
+      ]
+    },
+    {
+      "id": 9,
+      "imageName": "img_kiwi",
+      "correctWordKey": "word_kiwi",
+      "synonymsKeys": [
+        "syn_green", "syn_oval", "syn_sour", "syn_sweet", "syn_soft", "syn_exotic"
+      ]
+    },
+    {
+      "id": 10,
+      "imageName": "img_lemon",
+      "correctWordKey": "word_lemon",
+      "synonymsKeys": [
+        "syn_yellow", "syn_oval", "syn_sour", "syn_citrus", "syn_juice", "syn_slice"
+      ]
+    },
+    {
+      "id": 11,
+      "imageName": "img_lime",
+      "correctWordKey": "word_lime",
+      "synonymsKeys": [
+        "syn_green", "syn_round", "syn_sour", "syn_citrus", "syn_juice", "syn_slice"
+      ]
+    },
+    {
+      "id": 12,
+      "imageName": "img_mango",
+      "correctWordKey": "word_mango",
+      "synonymsKeys": [
+        "syn_yellow", "syn_orange_color", "syn_oval", "syn_sweet", "syn_juice", "syn_tropical"
+      ]
+    },
+    {
+      "id": 13,
+      "imageName": "img_peach",
+      "correctWordKey": "word_peach",
+      "synonymsKeys": [
+        "syn_orange_color", "syn_round", "syn_soft", "syn_sweet", "syn_juice", "syn_stone"
+      ]
+    },
+    {
+      "id": 14,
+      "imageName": "img_plum",
+      "correctWordKey": "word_plum",
+      "synonymsKeys": [
+        "syn_blue_purple", "syn_round", "syn_sweet", "syn_sour", "syn_juice", "syn_stone"
+      ]
+    },
+    {
+      "id": 15,
+      "imageName": "img_pomegranate",
+      "correctWordKey": "word_pomegranate",
+      "synonymsKeys": [
+        "syn_red", "syn_round", "syn_sweet", "syn_sour", "syn_juice", "syn_seed"
+      ]
+    },
+    {
+      "id": 16,
+      "imageName": "img_raspberry",
+      "correctWordKey": "word_raspberry",
+      "synonymsKeys": [
+        "syn_berry", "syn_red", "syn_round", "syn_sweet", "syn_sour", "syn_small"
+      ]
+    },
+    {
+      "id": 17,
+      "imageName": "img_strawberry",
+      "correctWordKey": "word_strawberry",
+      "synonymsKeys": [
+        "syn_berry", "syn_red", "syn_round", "syn_sweet", "syn_sour", "syn_small"
+      ]
+    },
+    {
+      "id": 18,
+      "imageName": "img_watermelon",
+      "correctWordKey": "word_watermelon",
+      "synonymsKeys": [
+        "syn_berry", "syn_green", "syn_round", "syn_sweet", "syn_juice", "syn_water"
       ]
     }
   ]
