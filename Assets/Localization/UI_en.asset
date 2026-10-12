@@ -86,6 +86,26 @@ MonoBehaviour:
     m_Localized: '{0:F0} sec'
     m_Metadata:
       m_Items: []
+  - m_Id: 35741594294788096
+    m_Localized: Enter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35850861668573184
+    m_Localized: Open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35850920636293120
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35851013137473536
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35859138523537408
+    m_Localized: Gallery
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

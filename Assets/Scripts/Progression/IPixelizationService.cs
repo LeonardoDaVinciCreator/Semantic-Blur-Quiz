@@ -11,7 +11,7 @@ namespace Progression
         public float MaxPixelSize;
     }
 
-    public interface IProgressionService
+    public interface IPixelizationService
     {
         void ResetProgress();
         float CalculatePixelSize(VerificationResult result, PixelizationStat pixelization, float step);

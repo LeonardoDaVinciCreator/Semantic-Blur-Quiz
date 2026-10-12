@@ -19,7 +19,7 @@ namespace Services
         public IVerificationService CreateVerificationService(IWordsCache cache) 
             => new QuizVerificationService(cache);
 
-        public IProgressionService CreateProgressionService() 
-            => new QuizProgressionService();
+        public IPixelizationService CreateProgressionService() 
+            => new PixelizationService();
     }
 }

@@ -28,6 +28,12 @@ namespace Timer
             _isRunning = false;            
         }
 
+        public void Resume()
+        {
+            if (_timeLeft > 0f)
+                _isRunning = true;
+        }
+
         public void Tick(float deltaTime)
         {
             if (!_isRunning) return;

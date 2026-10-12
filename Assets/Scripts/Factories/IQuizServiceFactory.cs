@@ -13,6 +13,6 @@ namespace Services
         IQuizJsonService CreateJsonService();
         IWordsCache CreateWordsCache();
         IVerificationService CreateVerificationService(IWordsCache cache);
-        IProgressionService CreateProgressionService();
+        IPixelizationService CreateProgressionService();
     }
 }

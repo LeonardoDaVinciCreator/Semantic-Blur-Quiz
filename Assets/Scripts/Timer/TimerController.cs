@@ -63,7 +63,9 @@ namespace Core
         {
             _timerTextMask = timerTextMask;
             UpdateDisplay(_timer.TimeRemaining);
-        }
+        }        
+
+        public void ResumeTimer() => _timer.Resume();
 
         public void SetVisible(bool visible)
         {
@@ -71,8 +73,7 @@ namespace Core
 
             _timerView.SetVisible(visible);
 
-            if (!visible)
-                _timer.Pause();
+            if (!visible) _timer.Pause();
         }
         
     }

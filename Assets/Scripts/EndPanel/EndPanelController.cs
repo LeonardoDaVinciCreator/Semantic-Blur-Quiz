@@ -25,6 +25,8 @@ namespace EndPanel
 
         public void ShowResult(float time, int correct, int total, bool isTimeOut)
         {
+            if (_model == null) _model = new EndPanelModel();
+
             _time = time;
             _correct = correct;
             _total = total;
@@ -48,6 +50,18 @@ namespace EndPanel
 
             var data = BuildData();
             _view.Show(data);
+        }
+
+        public void SetVisible(bool visible)
+        {
+            if (visible)
+            {
+                if (_hasResult) _view.Show(BuildData());
+            }
+            else
+            {
+                _view.Hide();
+            }
         }
 
         public EndPanelData BuildData()

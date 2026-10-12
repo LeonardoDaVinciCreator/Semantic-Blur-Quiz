@@ -127,9 +127,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 14
-        y: 7
-        width: 1237
-        height: 813
+        y: 4
+        width: 1262
+        height: 816
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -320,6 +320,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: buttonSubmit
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 249
+        width: 147
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7435307f3159bbf42af7d85f3ae88655
+      internalID: -358158623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -342,6 +364,7 @@ TextureImporter:
       block 1: -703687353
       block2: 1054443863
       block22: 1388101901
+      buttonSubmit: -358158623
       circle slider: -1255105898
       slider: -358879269
       tv: 333826238

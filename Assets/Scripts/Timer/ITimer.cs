@@ -12,6 +12,7 @@ namespace Timer
         
         void Start(float duration);        
         void Pause();
+        void Resume();
         void Tick(float deltaTime);
     }
 }

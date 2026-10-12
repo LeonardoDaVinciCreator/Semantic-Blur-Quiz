@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Data;
 using UnityEngine;
 
@@ -9,5 +10,7 @@ namespace Json
         LevelData GetLevelData(int index);
         int GetTotalLevels();
         void ShuffleLevels();
+
+        IReadOnlyList<LevelData> GetAllLevels();
     }
 }

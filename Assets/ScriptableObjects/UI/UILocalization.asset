@@ -12,23 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc331e9d570b9748bed63a633decdf3, type: 3}
   m_Name: UILocalization
   m_EditorClassIdentifier: Assembly-CSharp::Data.UIConfigSO
-  Main:
-    Title: ui_main_title
-    StartButton: ui_main_start
-    SettingsButton: ui_main_settings
-    QuitButton: ui_main_quit
   Game:
     NextButton: ui_game_next
-    MenuButton: ui_game_menu
+    SubmitButton: ui_game_submit
+    GalleryButton: gallery_button
+    MenuButton: menu_button
     SettingsButton: ui_main_settings
     FinishQuiz: ui_game_finish
     QuitButton: ui_main_quit
-  Settings:
-    Title: ui_settings_title
-    MusicLabel: ui_settings_music
-    SoundLabel: ui_settings_sound
-    ContinueButton: ui_settings_continue
-    MainMenuButton: menu_button
   EndPanel:
     NameTable: UI
     TitlegGameOverKey: ui_finish_title
@@ -44,3 +35,7 @@ MonoBehaviour:
     RestartButtonKey: restart_button
     MenuButtonKey: menu_button
     TimerTextKey: timer_text
+  Gallery:
+    SelectButtonKey: gallery_open
+    CloseImageKey: gallery_close_image
+    CloseButtonKey: gallery_back

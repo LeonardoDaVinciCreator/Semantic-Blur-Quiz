@@ -11,6 +11,7 @@ using EndPanel;
 using Json;
 using Verification;
 using Services;
+using Gallery;
 
 namespace Core
 {
@@ -19,7 +20,7 @@ namespace Core
         [Header("Шаг")]
         [SerializeField] private float _blurStep = 10f;
 
-        [Header("Таблица для вопросов и ответов пользователю")]
+        [Header("Таблица для вопросов и ответов пользов ателю")]
         [TableName]
         [SerializeField] private string _tableNameReplicas = "Replicas";
 
@@ -37,8 +38,12 @@ namespace Core
 
         [Header("UI")]
         [SerializeField] private Image _quizImage;
+
         [SerializeField] private TMP_InputField _inputField;
+
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _submitButton;
+        [SerializeField] private TMP_Text _galleryButtonText;
 
         [SerializeField] private TMP_Text _statusText;
 
@@ -60,10 +65,14 @@ namespace Core
         [SerializeField] private TMP_Text _restartButtonText;
         [SerializeField] private TMP_Text _returnMainMenuText;
         [SerializeField] private TMP_Text _nextButtonText;
+        [SerializeField] private TMP_Text _submitButtonText;
 
         [Header("Контроллеры")]
         [SerializeField] private TimerController _timerController;
         [SerializeField] private EndPanelController _endPanelController;
+
+        [SerializeField] private GalleryController _galleryController;
+        [SerializeField] private Button _galleryButton;
                
         private float _startTime;
         private float _totalTime;
@@ -72,10 +81,16 @@ namespace Core
 
         private IWordsCache _cache;
         private IVerificationService _verificationService;
-        private IProgressionService _progressionService;
+        private IPixelizationService _pixelizationService;
+        private IQuizProgressService _progressService;
 
         private string _namePixelSize = "_PixelSize";
         private PixelizationStat _pixelStat = new PixelizationStat();
+
+        private bool _wasInputActive;
+        private bool _wasSubmitActive;
+        private bool _wasNextActive;
+        private bool _wasStatusActive;
 
         private int _currentLevelIndex = 0;
         private int _correctCount = 0;
@@ -84,6 +99,8 @@ namespace Core
         private List<string> _usedSynonymsKeys = new List<string>();    
 
         private string _currentReplicaKey = "";
+        private bool _isGameFinished = false;
+        private string _currentThemeId;
 
         private void Start()
         {
@@ -92,18 +109,20 @@ namespace Core
 
             if (GameManager.Instance != null)
                 Debug.Log(GameManager.Instance.TableName);
-            
 
-            _quizImage.material = Instantiate(_quizImage.material); // чтобы разблокировать изменения данных для материала
+            _quizImage.material = Instantiate(_quizImage.material);
             GetPixelizationStat();
 
+            // === Тема ===
             if (GameManager.Instance != null && !string.IsNullOrEmpty(GameManager.Instance.Folder))
             {
                 _nameFolder = GameManager.Instance.Folder;
                 _tableName = GameManager.Instance.TableName;
             }
 
-            // пример пути Resources/Themes/Fruits/levels.json
+            _currentThemeId = ThemeIdHelper.FromFolder(_nameFolder);
+
+            // === Сервисы ===
             TextAsset textAsset = Resources.Load<TextAsset>($"{_nameFolder}/levels");
 
             var factory = new QuizServiceFactory();
@@ -113,36 +132,69 @@ namespace Core
 
             _cache = factory.CreateWordsCache();
             _verificationService = factory.CreateVerificationService(_cache);
-            _progressionService = factory.CreateProgressionService();
+            _pixelizationService = factory.CreateProgressionService();
+            _progressService = new QuizProgressService();
 
-            InitUI();            
+            // === UI и подписки на кнопки ===
+            InitUI();
+            InitPanelEnd();
+            InitGallery();
 
             Localization.LanguageManager.Instance.OnLanguageChanged += OnLanguageChanged;
-            InitPanelEnd();
 
             _inputField.onSubmit.AddListener(OnInputFieldSubmit);
             _nextButton.onClick.AddListener(NextLevel);
-            
+            _submitButton.onClick.AddListener(OnSubmitButtonClicked);
+
+            // === Контроллеры ===
             InitializeControllers();
 
-            LoadLevel(_currentLevelIndex);                      
+            // === Старт игры ===
+            LoadLevel(_currentLevelIndex);
         }
 
         private void InitializeControllers()
         {
-            if(_timerController == null)
+            InitializeTimer();
+            InitializeEndPanel();
+            InitializeGallery();
+        }
+
+        private void InitializeTimer()
+        {
+            if (_timerController == null)
             {
                 Debug.LogError("[QuizGameController] TimerController не назначен!");
                 return;
             }
-            else
-            {
-                _timerController.UpdateTextMask(GetLocalizedString(_uiConfig.EndPanel.TimerTextKey));
-                _timerController.OnTimerFinished += HandleTimerFinished;
 
-                _startTime = Time.time;
-                _timerController.StartTimer(); 
-            }             
+            _timerController.UpdateTextMask(GetLocalizedString(_uiConfig.EndPanel.TimerTextKey));
+            _timerController.OnTimerFinished += HandleTimerFinished;
+
+            _startTime = Time.time;
+            _timerController.StartTimer();
+        }
+
+        private void InitializeEndPanel()
+        {
+            if (_endPanelController == null)
+            {
+                Debug.LogError("[QuizGameController] EndPanelController не назначен!");
+                return;
+            }
+        }
+
+        private void InitializeGallery()
+        {
+            if (_galleryController == null)
+            {
+                Debug.LogError("[QuizGameController] GalleryController не назначен!");
+                return;
+            }
+
+            _galleryController.Initialize(_jsonService, _progressService);
+            _galleryController.OnOpened += HandleGalleryOpened;
+            _galleryController.OnClosed += HandleGalleryClosed;
         }
 
         private void OnDestroy()
@@ -150,35 +202,38 @@ namespace Core
             if (_timerController != null)
                 _timerController.OnTimerFinished -= HandleTimerFinished;
 
-            _cache.Dispose();
+            if (_galleryController != null)
+            {
+                _galleryController.OnOpened -= HandleGalleryOpened;
+                _galleryController.OnClosed -= HandleGalleryClosed;
+            }
+
+            _cache?.Dispose();
 
             if (Localization.LanguageManager.Instance != null)
                 Localization.LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
 
             if (AudioManager.Instance != null)
                 AudioManager.Instance.StopQuizNoise();
-        }        
+        }
+
         private void RefreshAllUI()
-        {
-            
-            _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Settings.MainMenuButton);
-
-            
-
+        {            
+            _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Game.MenuButton);
 
             _restartButtonText.text = GetLocalizedString(_uiConfig.EndPanel.RestartButtonKey);
             _returnMainMenuText.text = GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
 
             _nextButtonText.text = GetLocalizedString(_uiConfig.Game.NextButton);
+            _submitButtonText.text = GetLocalizedString(_uiConfig.Game.SubmitButton);
+            _galleryButtonText.text = GetLocalizedString(_uiConfig.Game.GalleryButton);
         }
 
         private void InitUI()
         {            
             RefreshAllUI();
 
-            _mainMenuButton.onClick.AddListener(GoToMainMenu);
-
-           
+            _mainMenuButton.onClick.AddListener(GoToMainMenu);           
         }
 
         private void InitPanelEnd()
@@ -186,6 +241,60 @@ namespace Core
             _restartButton.onClick.AddListener(ReloadGame);
             _returnMainMenu.onClick.AddListener(LoadMainMenu);
         }
+
+        private void InitGallery()
+        {
+            _galleryButton.onClick.AddListener(() => _galleryController.Open(_nameFolder));
+        }
+
+        private void HandleGalleryOpened()
+        {            
+            _timerController.PauseTimer();
+            
+            _wasInputActive = _inputField.gameObject.activeSelf;
+            _wasSubmitActive = _submitButton.gameObject.activeSelf;
+            _wasNextActive = _nextButton.gameObject.activeSelf;
+            _wasStatusActive = _statusText.gameObject.activeSelf;           
+            
+            _inputField.gameObject.SetActive(false);
+            _submitButton.gameObject.SetActive(false);
+            _nextButton.gameObject.SetActive(false);
+            _statusText.gameObject.SetActive(false);
+
+            _galleryButton.gameObject.SetActive(false);
+
+            _quizImage.gameObject.SetActive(false);       
+
+            if (_isGameFinished)            {
+                
+                _endPanelController.SetVisible(false);
+            }     
+        }
+
+        private void HandleGalleryClosed()
+        {
+            _inputField.gameObject.SetActive(_wasInputActive);
+            _submitButton.gameObject.SetActive(_wasSubmitActive);
+            _nextButton.gameObject.SetActive(_wasNextActive);
+            _statusText.gameObject.SetActive(_wasStatusActive);
+            _galleryButton.gameObject.SetActive(true);
+            _quizImage.gameObject.SetActive(true);
+
+            if (_isGameFinished)            {
+                
+                _endPanelController.SetVisible(true);
+            }
+            else
+            {                
+                _timerController.SetVisible(true);
+                _timerController.ResumeTimer();
+
+                if (_wasInputActive)
+                    _inputField.ActivateInputField();
+            }
+        }
+
+
 
         private void OnLanguageChanged(string obj)
         {
@@ -206,9 +315,10 @@ namespace Core
             if (_endPanelController != null)
             {                
                 _endPanelController.RefreshDisplay();
-            }
+            }          
 
-           
+            if (_galleryController != null)
+                _galleryController.RefreshLocalization(); 
         }
 
 
@@ -254,6 +364,7 @@ namespace Core
 
         private void OnGameFinished(bool timeOut)
         {           
+            _isGameFinished = true;
             if (AudioManager.Instance != null)
                 AudioManager.Instance.StopQuizNoise();
 
@@ -262,6 +373,7 @@ namespace Core
             _totalTime = Time.time - _startTime;
 
             _inputField.gameObject.SetActive(false);
+            _submitButton.gameObject.SetActive(false);
             _nextButton.gameObject.SetActive(false);
 
             _quizImage.gameObject.SetActive(false);            
@@ -300,7 +412,7 @@ namespace Core
                 return;
             }
 
-            _targetPixelSize = _progressionService.CalculatePixelSize(result, _pixelStat, _blurStep);       
+            _targetPixelSize = _pixelizationService.CalculatePixelSize(result, _pixelStat, _blurStep);       
 
             _isWinAnimation = result == VerificationResult.Win;
             
@@ -312,10 +424,12 @@ namespace Core
 
                     _inputField.DeactivateInputField();
                     _inputField.gameObject.SetActive(false);
+                    _submitButton.gameObject.SetActive(false);
                     _nextButton.gameObject.SetActive(true);
                     _nextButton.Select();
 
                     _correctCount++;
+                    _progressService.MarkGuessed(_currentThemeId, level.id);
 
                     break;
 
@@ -339,7 +453,17 @@ namespace Core
             _currentReplicaKey = randomKey;
 
             _inputField.text = "";
-            if (result != VerificationResult.Win) _inputField.ActivateInputField();
+
+            if (result != VerificationResult.Win) 
+            {
+                _inputField.ActivateInputField();
+                _submitButton.gameObject.SetActive(true);
+            }
+        }
+
+        private void OnSubmitButtonClicked()
+        {
+            OnInputFieldSubmit(_inputField.text);
         }
 
         private void LoadLevel(int index)
@@ -355,6 +479,7 @@ namespace Core
                 _inputField.text = "";
                 _inputField.DeactivateInputField();
                 _inputField.gameObject.SetActive(false);
+                _submitButton.gameObject.SetActive(false);
                 _nextButton.gameObject.SetActive(false);                
                 _statusText.fontStyle = FontStyles.Normal;
                 randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
@@ -366,7 +491,7 @@ namespace Core
                 return;
             }
 
-            _progressionService.ResetProgress();
+            _pixelizationService.ResetProgress();
             _usedSynonymsKeys.Clear();
             _isWinAnimation = false;
 
@@ -387,6 +512,7 @@ namespace Core
 
             _nextButton.gameObject.SetActive(false);
             _inputField.gameObject.SetActive(true);
+            _submitButton.gameObject.SetActive(true);
 
             randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
 

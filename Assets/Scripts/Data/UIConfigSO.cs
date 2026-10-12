@@ -6,16 +6,13 @@ namespace Data
     [CreateAssetMenu(fileName = "UILocalization", menuName = "UI/UI Config")]
     public class UIConfigSO: ScriptableObject
     {
-        [Header("Главное меню (если нужно)")]
-        public MainMenu Main;
-
         [Header("Игровые UI (кнопки, подсказки)")]
-        public GameUI Game;        
-        
-        [Header("Панель настроек")]
-        public SettingsPanel Settings;     
+        public GameUI Game = new GameUI();        
 
         [Header("Панель завершения")]
-        public EndPanelSO EndPanel;   
+        public EndPanelSO EndPanel = new EndPanelSO();
+
+        [Header("Панель галереи")]
+        public GalleryConfig Gallery = new GalleryConfig();
     }
 }

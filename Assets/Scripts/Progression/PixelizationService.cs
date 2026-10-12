@@ -5,7 +5,7 @@ using Verification;
 
 namespace Progression
 {
-    public class QuizProgressionService : IProgressionService
+    public class PixelizationService : IPixelizationService
     {
         private int _wrongCount = 0;
 
