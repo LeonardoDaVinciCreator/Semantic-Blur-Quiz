@@ -103,6 +103,14 @@ MonoBehaviour:
     m_Key: gallery_button
     m_Metadata:
       m_Items: []
+  - m_Id: 38068405628411904
+    m_Key: hint_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38068435336667136
+    m_Key: hint_button
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

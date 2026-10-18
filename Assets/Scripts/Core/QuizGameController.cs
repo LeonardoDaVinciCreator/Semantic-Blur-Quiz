@@ -12,6 +12,7 @@ using Json;
 using Verification;
 using Services;
 using Gallery;
+using RulerPanel;
 
 namespace Core
 {
@@ -72,6 +73,7 @@ namespace Core
         [SerializeField] private EndPanelController _endPanelController;
 
         [SerializeField] private GalleryController _galleryController;
+        [SerializeField] private RulerPanelController _rulerPanelController;
         [SerializeField] private Button _galleryButton;
                
         private float _startTime;
@@ -146,10 +148,40 @@ namespace Core
             _nextButton.onClick.AddListener(NextLevel);
             _submitButton.onClick.AddListener(OnSubmitButtonClicked);
 
-            // === Контроллеры ===
+            /*// === Контроллеры ===
             InitializeControllers();
 
             // === Старт игры ===
+            LoadLevel(_currentLevelIndex);*/
+
+            HideGameUI();
+
+            if (_rulerPanelController != null)
+            {                
+                _rulerPanelController.OnClosed += StartGameAfterRuler;
+                _rulerPanelController.Show();
+            }
+        }        
+
+        private void HideGameUI()
+        {
+            _quizImage.gameObject.SetActive(false);
+            _inputField.gameObject.SetActive(false);
+            _submitButton.gameObject.SetActive(false);
+            _nextButton.gameObject.SetActive(false);
+            _statusText.gameObject.SetActive(false);
+            _galleryButton.gameObject.SetActive(false);
+            _timerController.SetVisible(false);
+        }
+
+        private void StartGameAfterRuler()
+        {
+            _quizImage.gameObject.SetActive(true);
+            _statusText.gameObject.SetActive(true);
+            _galleryButton.gameObject.SetActive(true);
+
+            InitializeControllers();
+
             LoadLevel(_currentLevelIndex);
         }
 
@@ -199,6 +231,9 @@ namespace Core
 
         private void OnDestroy()
         {
+            if (_rulerPanelController != null)
+                _rulerPanelController.OnClosed -= StartGameAfterRuler;
+
             if (_timerController != null)
                 _timerController.OnTimerFinished -= HandleTimerFinished;
 
@@ -304,6 +339,9 @@ namespace Core
             {
                 _statusText.text = LocalizationHelper.Get(_tableNameReplicas, _currentReplicaKey);
             }            
+
+            if (_rulerPanelController != null)
+                _rulerPanelController.RefreshLocalization(); 
 
             //обновление таймера
             if (_timerController != null)

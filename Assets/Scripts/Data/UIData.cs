@@ -15,5 +15,8 @@ namespace Data
         
         [LocalizationKey] public string FinishQuiz;
         [LocalizationKey] public string QuitButton;
+        
+        [LocalizationKey] public string HintTextKey = "hint_text";
+        [LocalizationKey] public string HintButtonKey = "hint_button";
     }
 }

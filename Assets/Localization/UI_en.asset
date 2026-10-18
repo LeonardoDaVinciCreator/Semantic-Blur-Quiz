@@ -106,6 +106,15 @@ MonoBehaviour:
     m_Localized: Gallery
     m_Metadata:
       m_Items: []
+  - m_Id: 38068435336667136
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 38068405628411904
+    m_Localized: Look at the photo and enter a word associated with it. This can
+      be a name, a property (color, taste, category), or a similar object.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
