@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Localization;
 using Core;
+using System.Threading.Tasks;
 
 public class AudioSettingsController : MonoBehaviour
 {
@@ -68,17 +69,17 @@ public class AudioSettingsController : MonoBehaviour
         RefreshLabels();
     }
 
-    private void RefreshLabels()
+    private async void RefreshLabels()
     {
         if (_musicLabel != null)
-            _musicLabel.text = GetLocalizedString(_musicKey);
+            _musicLabel.text = await GetLocalizedString(_musicKey);
 
         if (_soundLabel != null)
-            _soundLabel.text = GetLocalizedString(_soundKey);
+            _soundLabel.text = await GetLocalizedString(_soundKey);
     }
 
-    private string GetLocalizedString(string key)
+    private async Task<string> GetLocalizedString(string key)
     {
-        return LocalizationHelper.Get(_tableNameUI, key);
+        return await LocalizationHelper.GetAsync(_tableNameUI, key);
     }
 }

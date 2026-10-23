@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Data;
 using Localization;
 using UnityEngine;
@@ -44,19 +45,19 @@ namespace EndPanel
             _view.Hide();
         }
 
-        public void RefreshDisplay()
+        public async void RefreshDisplay()
         {
             if(!_hasResult) return;
 
-            var data = BuildData();
+            var data = await BuildData();
             _view.Show(data);
         }
 
-        public void SetVisible(bool visible)
+        public async Task SetVisible(bool visible)
         {
             if (visible)
             {
-                if (_hasResult) _view.Show(BuildData());
+                if (_hasResult) _view.Show(await BuildData());
             }
             else
             {
@@ -64,45 +65,45 @@ namespace EndPanel
             }
         }
 
-        public EndPanelData BuildData()
+        public async Task<EndPanelData> BuildData()
         {
             string bestTimeText = _model.TryGetBestTime(out var bestTime)
                 ? string.Format(
-                    GetLocalizedString(_maskConfig.EndPanel.BestTimeTextKey),
+                    await GetLocalizedString(_maskConfig.EndPanel.BestTimeTextKey),
                     bestTime
                 )
                 : "-";
             
             string bestScoreText = _model.TryGetBestScore(out var bestScore)
                 ? string.Format(
-                    GetLocalizedString(_maskConfig.EndPanel.BestScoreTextKey),
+                    await GetLocalizedString(_maskConfig.EndPanel.BestScoreTextKey),
                     bestScore
                 )
                 : "-";
 
             return new EndPanelData
             {
-                Title = GetLocalizedString(_isTimeOut ? _maskConfig.EndPanel.TitlegGameOverKey : _maskConfig.EndPanel.TitleCompleteKey),
+                Title = await GetLocalizedString(_isTimeOut ? _maskConfig.EndPanel.TitlegGameOverKey : _maskConfig.EndPanel.TitleCompleteKey),
 
-                TimeLabel = GetLocalizedString(_maskConfig.EndPanel.TimeLabelKey),
-                TimeValue = string.Format(GetLocalizedString(_maskConfig.EndPanel.TimeTextKey), _time),
+                TimeLabel = await GetLocalizedString(_maskConfig.EndPanel.TimeLabelKey),
+                TimeValue = string.Format(await GetLocalizedString(_maskConfig.EndPanel.TimeTextKey), _time),
 
-                ScoreLabel = GetLocalizedString(_maskConfig.EndPanel.ScoreLabelKey),
-                ScoreValue = string.Format(GetLocalizedString(_maskConfig.EndPanel.ScoreTextKey), _correct, _total),
+                ScoreLabel = await GetLocalizedString(_maskConfig.EndPanel.ScoreLabelKey),
+                ScoreValue = string.Format(await GetLocalizedString(_maskConfig.EndPanel.ScoreTextKey), _correct, _total),
 
-                BestTimeLabel = GetLocalizedString(_maskConfig.EndPanel.BestTimeLabelKey),
+                BestTimeLabel = await GetLocalizedString(_maskConfig.EndPanel.BestTimeLabelKey),
                 BestTimeValue = bestTimeText,
 
-                BestScoreLabel = GetLocalizedString(_maskConfig.EndPanel.BestScoreLabelKey),
+                BestScoreLabel = await GetLocalizedString(_maskConfig.EndPanel.BestScoreLabelKey),
                 BestScoreValue = bestScoreText,
             };
         }
 
-        private string GetLocalizedString(string key)
+        private async Task<string> GetLocalizedString(string key)
         {
             if(string.IsNullOrEmpty(key)) return string.Empty;
 
-            return LocalizationHelper.Get(_maskConfig.EndPanel.NameTable, key);
+            return await LocalizationHelper.GetAsync(_maskConfig.EndPanel.NameTable, key);
         }
     }
 }

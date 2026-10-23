@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Localization;
 
 namespace Verification
@@ -22,13 +23,13 @@ namespace Verification
                 LanguageManager.Instance.OnLanguageChanged -= OnLanguageChanged;
         }
 
-        public string[] GetCache(string tableName, string key)
+        public async Task<string[]> GetCacheAsync(string tableName, string key)
         {
             string cacheKey = $"{tableName}_{key}";
 
             if (!_cache.ContainsKey(cacheKey))
             {
-                _cache[cacheKey] = LanguageManager.Instance.GetWordsByKey(tableName, key);
+                _cache[cacheKey] = await LanguageManager.Instance.GetWordsByKeyAsync(tableName, key);
             }
             
             return _cache[cacheKey];

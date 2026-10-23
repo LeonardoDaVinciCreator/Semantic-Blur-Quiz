@@ -1,14 +1,16 @@
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace Localization
 {
     public static class LocalizationHelper
     {
-        public static string Get(string tableName, string key)
+        public static async Task<string> GetAsync(string tableName, string key)
         {
             if (string.IsNullOrEmpty(key)) return string.Empty;
             if (LanguageManager.Instance == null) return key;
-            return LanguageManager.Instance.GetWordByKey(tableName, key);
+
+            return await LanguageManager.Instance.GetWordByKeyAsync(tableName, key);
         }
     }
 }

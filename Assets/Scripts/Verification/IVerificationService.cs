@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data;
 using Localization;
 using Services;
@@ -17,6 +18,6 @@ namespace Verification
 
     public interface IVerificationService
     {
-        VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys);
+        Task<VerificationResult> VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys);
     }
 }

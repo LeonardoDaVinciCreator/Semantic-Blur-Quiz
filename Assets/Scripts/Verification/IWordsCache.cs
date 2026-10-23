@@ -1,11 +1,12 @@
 using Localization;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Verification
 {
     public interface IWordsCache
     {
-        string[] GetCache(string tableName, string key);
+        Task<string[]> GetCacheAsync(string tableName, string key);
         void Dispose();
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data;
 using Localization;
 using Services;
@@ -17,13 +18,13 @@ namespace Verification
             _formsCache = formsCache;
         }
 
-        public VerificationResult VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys)
+        public async Task<VerificationResult> VerifyAnswer(string playerInput, LevelData currentLevel, string tableName, List<string> usedSynonymsKeys)
         {
             if(string.IsNullOrEmpty(playerInput)) return VerificationResult.Wrong;
             
             string lowerInput = playerInput.ToLower().Trim();
 
-            string[] correctWords = _formsCache.GetCache(tableName, currentLevel.correctWordKey);
+            string[] correctWords = await _formsCache.GetCacheAsync(tableName, currentLevel.correctWordKey);
             
             if(Array.Exists(correctWords, w => w.ToLower().Trim() == lowerInput)) 
                 return VerificationResult.Win;        
@@ -39,7 +40,7 @@ namespace Verification
                 if (usedSynonymsKeys != null && usedSynonymsKeys.Contains(synKey))
                     continue;
 
-                string[] words = _formsCache.GetCache(tableName, synKey);
+                string[] words = await _formsCache.GetCacheAsync(tableName, synKey);
                 if(Array.Exists(words, w => w.ToLower().Trim() == lowerInput))
                 {
                     usedSynonymsKeys?.Add(synKey); 
@@ -55,7 +56,7 @@ namespace Verification
                     if (!usedSynonymsKeys.Contains(synKey))
                         continue;
 
-                    string[] forms = _formsCache.GetCache(tableName, synKey);
+                    string[] forms = await _formsCache.GetCacheAsync(tableName, synKey);
                     if (Array.Exists(forms, w => w.ToLower().Trim() == lowerInput))
                     {
                         return VerificationResult.Ignore;

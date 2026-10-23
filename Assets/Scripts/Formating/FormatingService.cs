@@ -1,17 +1,20 @@
 using Localization;
+using System.Threading.Tasks;
 
 namespace Formating
 {
     public static class FormatingService
     {
-        public static string FormatTime(float seconds, string tableName, string key)
+        public static async Task<string> FormatTime(float seconds, string tableName, string key)
         {
-            return string.Format(LocalizationHelper.Get(tableName, key), seconds);
+            string formatString = await LocalizationHelper.GetAsync(tableName, key);
+            return string.Format(formatString, seconds);
         }
 
-        public static string FormatScore(int score, string tableName, string key)
+        public static async Task<string> FormatScore(int score, string tableName, string key)
         {
-            return string.Format(LocalizationHelper.Get(tableName, key), score);
+            string formatString = await LocalizationHelper.GetAsync(tableName, key);
+            return string.Format(formatString, score);
         }
     }
 }

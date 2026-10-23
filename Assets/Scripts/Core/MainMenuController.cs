@@ -2,6 +2,7 @@ using UnityEngine;
 using Data;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 namespace Core
 {
@@ -40,15 +41,15 @@ namespace Core
             RefreshAllButtonsText();            
         }
 
-        private void RefreshAllButtonsText()
+        private async void RefreshAllButtonsText()
         {
             foreach (var button in _spawnedButtons)
             {
-                button.RefreshText();
+                await button.RefreshText();
             }
         }
 
-        public void BuildMenu()
+        public async void BuildMenu()
         {
             if (_themeConfigSO == null || _themeConfigSO.Themes == null) return;
 
@@ -61,7 +62,7 @@ namespace Core
             foreach (var themeData in _themeConfigSO.Themes)
             {
                 ThemeMenuButton newButton = Instantiate(_buttonPrefab, _container);
-                newButton.Initialize(themeData, OnThemeClicked);
+                await newButton.Initialize(themeData, OnThemeClicked);
                 _spawnedButtons.Add(newButton);
             }
 

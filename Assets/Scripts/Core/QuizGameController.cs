@@ -13,6 +13,7 @@ using Verification;
 using Services;
 using Gallery;
 using RulerPanel;
+using System.Threading.Tasks;
 
 namespace Core
 {
@@ -104,7 +105,7 @@ namespace Core
         private bool _isGameFinished = false;
         private string _currentThemeId;
 
-        private void Start()
+        private async void Start()
         {
             if (AudioManager.Instance != null)
                 AudioManager.Instance.StartQuizNoise();
@@ -159,7 +160,7 @@ namespace Core
             if (_rulerPanelController != null)
             {                
                 _rulerPanelController.OnClosed += StartGameAfterRuler;
-                _rulerPanelController.Show();
+                await _rulerPanelController.Show();
             }
         }        
 
@@ -174,15 +175,17 @@ namespace Core
             _timerController.SetVisible(false);
         }
 
-        private void StartGameAfterRuler()
+        private async void StartGameAfterRuler()
         {
             _quizImage.gameObject.SetActive(true);
             _statusText.gameObject.SetActive(true);
             _galleryButton.gameObject.SetActive(true);
 
+            _timerController.SetVisible(true);
+
             InitializeControllers();
 
-            LoadLevel(_currentLevelIndex);
+            await LoadLevel(_currentLevelIndex);
         }
 
         private void InitializeControllers()
@@ -192,7 +195,7 @@ namespace Core
             InitializeGallery();
         }
 
-        private void InitializeTimer()
+        private async void InitializeTimer()
         {
             if (_timerController == null)
             {
@@ -200,7 +203,7 @@ namespace Core
                 return;
             }
 
-            _timerController.UpdateTextMask(GetLocalizedString(_uiConfig.EndPanel.TimerTextKey));
+            _timerController.UpdateTextMask(await GetLocalizedString(_uiConfig.EndPanel.TimerTextKey));
             _timerController.OnTimerFinished += HandleTimerFinished;
 
             _startTime = Time.time;
@@ -252,16 +255,16 @@ namespace Core
                 AudioManager.Instance.StopQuizNoise();
         }
 
-        private void RefreshAllUI()
+        private async void RefreshAllUI()
         {            
-            _mainMenuButtonText.text = GetLocalizedString(_uiConfig.Game.MenuButton);
+            _mainMenuButtonText.text = await GetLocalizedString(_uiConfig.Game.MenuButton);
 
-            _restartButtonText.text = GetLocalizedString(_uiConfig.EndPanel.RestartButtonKey);
-            _returnMainMenuText.text = GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
+            _restartButtonText.text = await GetLocalizedString(_uiConfig.EndPanel.RestartButtonKey);
+            _returnMainMenuText.text = await GetLocalizedString(_uiConfig.EndPanel.MenuButtonKey);
 
-            _nextButtonText.text = GetLocalizedString(_uiConfig.Game.NextButton);
-            _submitButtonText.text = GetLocalizedString(_uiConfig.Game.SubmitButton);
-            _galleryButtonText.text = GetLocalizedString(_uiConfig.Game.GalleryButton);
+            _nextButtonText.text = await GetLocalizedString(_uiConfig.Game.NextButton);
+            _submitButtonText.text = await GetLocalizedString(_uiConfig.Game.SubmitButton);
+            _galleryButtonText.text = await GetLocalizedString(_uiConfig.Game.GalleryButton);
         }
 
         private void InitUI()
@@ -282,7 +285,7 @@ namespace Core
             _galleryButton.onClick.AddListener(() => _galleryController.Open(_nameFolder));
         }
 
-        private void HandleGalleryOpened()
+        private async void HandleGalleryOpened()
         {            
             _timerController.PauseTimer();
             
@@ -302,11 +305,11 @@ namespace Core
 
             if (_isGameFinished)            {
                 
-                _endPanelController.SetVisible(false);
+                await  _endPanelController.SetVisible(false);
             }     
         }
 
-        private void HandleGalleryClosed()
+        private async void HandleGalleryClosed()
         {
             _inputField.gameObject.SetActive(_wasInputActive);
             _submitButton.gameObject.SetActive(_wasSubmitActive);
@@ -317,7 +320,7 @@ namespace Core
 
             if (_isGameFinished)            {
                 
-                _endPanelController.SetVisible(true);
+                await _endPanelController.SetVisible(true);
             }
             else
             {                
@@ -331,22 +334,22 @@ namespace Core
 
 
 
-        private void OnLanguageChanged(string obj)
+        private async void OnLanguageChanged(string obj)
         {
             RefreshAllUI();
 
             if (!string.IsNullOrEmpty(_currentReplicaKey))
             {
-                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, _currentReplicaKey);
+                _statusText.text = await LocalizationHelper.GetAsync(_tableNameReplicas, _currentReplicaKey);
             }            
 
             if (_rulerPanelController != null)
-                _rulerPanelController.RefreshLocalization(); 
+                await _rulerPanelController.RefreshLocalization(); 
 
             //обновление таймера
             if (_timerController != null)
             {
-                string mask = GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
+                string mask = await GetLocalizedString(_uiConfig.EndPanel.TimerTextKey);
                 _timerController.UpdateTextMask(mask);
             }
 
@@ -370,10 +373,10 @@ namespace Core
             SceneManager.LoadScene(_nameMenuScene);
         }
 
-        public string GetLocalizedString(string key)
+        public async Task<string> GetLocalizedString(string key)
         {
             if (string.IsNullOrEmpty(key)) return string.Empty;
-            return LocalizationHelper.Get(_tableNameUI, key);
+            return await LocalizationHelper.GetAsync(_tableNameUI, key);
         }
 
         private void Update()
@@ -423,7 +426,7 @@ namespace Core
 
         
 
-        private void OnInputFieldSubmit(string playerInput)
+        private async void OnInputFieldSubmit(string playerInput)
         {
             if (string.IsNullOrEmpty(playerInput)) return;
 
@@ -432,7 +435,7 @@ namespace Core
             LevelData level = _jsonService.GetLevelData(_currentLevelIndex);
             if (level == null) return;
 
-            VerificationResult result = _verificationService.VerifyAnswer(playerInput, level, _tableName, _usedSynonymsKeys);
+            VerificationResult result = await _verificationService.VerifyAnswer(playerInput, level, _tableName, _usedSynonymsKeys);
             
             string randomKey = "";
 
@@ -442,7 +445,7 @@ namespace Core
                     Core.AudioManager.Instance.PlaySoundAnswer(result);
 
                 randomKey = _replicasSO.ReplicasData.Answers.Ignore.Keys.GetRandomItem()?.key ?? "";
-                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
+                _statusText.text = await LocalizationHelper.GetAsync(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
                 _inputField.text = "";
                 _statusText.fontStyle = FontStyles.Normal;
@@ -487,7 +490,7 @@ namespace Core
                 Core.AudioManager.Instance.PlaySoundAnswer(result);
             }
 
-            _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
+            _statusText.text = await LocalizationHelper.GetAsync(_tableNameReplicas, randomKey);
             _currentReplicaKey = randomKey;
 
             _inputField.text = "";
@@ -504,7 +507,7 @@ namespace Core
             OnInputFieldSubmit(_inputField.text);
         }
 
-        private void LoadLevel(int index)
+        private async Task LoadLevel(int index)
         {
             LevelData level = _jsonService.GetLevelData(index);
 
@@ -521,7 +524,7 @@ namespace Core
                 _nextButton.gameObject.SetActive(false);                
                 _statusText.fontStyle = FontStyles.Normal;
                 randomKey = _replicasSO.ReplicasData.Finishing.Finish.Keys.GetRandomItem()?.key ?? "";
-                _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
+                _statusText.text = await LocalizationHelper.GetAsync(_tableNameReplicas, randomKey);
                 _currentReplicaKey = randomKey;
 
                 OnGameFinished(false);
@@ -554,14 +557,14 @@ namespace Core
 
             randomKey = _replicasSO.ReplicasData.Questions.Question.Keys.GetRandomItem()?.key ?? "";
 
-            _statusText.text = LocalizationHelper.Get(_tableNameReplicas, randomKey);
+            _statusText.text = await LocalizationHelper.GetAsync(_tableNameReplicas, randomKey);
             _currentReplicaKey = randomKey;
 
             _inputField.text = "";
             _inputField.ActivateInputField();
         }
 
-        private void NextLevel()
+        private async void NextLevel()
         {
             if (Core.AudioManager.Instance != null)
             {
@@ -569,7 +572,7 @@ namespace Core
             }
             
             _currentLevelIndex++;
-            LoadLevel(_currentLevelIndex);
+            await LoadLevel(_currentLevelIndex);
         }        
 
         private void GoToMainMenu()

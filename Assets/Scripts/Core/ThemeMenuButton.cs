@@ -5,6 +5,7 @@ using Data;
 using System;
 
 using Localization;
+using System.Threading.Tasks;
 
 namespace Core
 {
@@ -16,12 +17,12 @@ namespace Core
         private ThemeItemData _data;
         private Action<ThemeItemData> _onThemeSelected;
 
-        public void Initialize(ThemeItemData data, Action<ThemeItemData> onThemeSelected)
+        public async Task Initialize(ThemeItemData data, Action<ThemeItemData> onThemeSelected)
         {
             _data = data;
             _onThemeSelected = onThemeSelected;
 
-            _nameText.text = LocalizationHelper.Get(_data.TableName, _data.ThemeNameKey);
+            _nameText.text = await LocalizationHelper.GetAsync(_data.TableName, _data.ThemeNameKey);
             
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(SelectTheme);
@@ -32,11 +33,11 @@ namespace Core
             _onThemeSelected?.Invoke(_data);
         }
 
-        public void RefreshText()
+        public async Task RefreshText()
         {
             if (_data != null)
             {
-                _nameText.text = LocalizationHelper.Get(_data.TableName, _data.ThemeNameKey);
+                _nameText.text = await LocalizationHelper.GetAsync(_data.TableName, _data.ThemeNameKey);
             }
         }
     }

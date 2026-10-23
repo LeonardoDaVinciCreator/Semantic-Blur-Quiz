@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Manager;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -25,7 +26,12 @@ namespace Localization
 
             if (PlayerPrefs.HasKey("Language"))
                 _currentLanguage = PlayerPrefs.GetString("Language");
+        }
 
+        private async void Start()
+        {
+            await LocalizationSettings.InitializationOperation.Task;
+            
             SetLanguageByCode(_currentLanguage);
         }
 
@@ -48,14 +54,16 @@ namespace Localization
             OnLanguageChanged?.Invoke(code);
         }
 
-        public string GetWordByKey(string tableName, string key)
+        public async Task<string> GetWordByKeyAsync(string tableName, string key)
         {
-            return LocalizationSettings.StringDatabase.GetLocalizedString(tableName, key);
+            var operation = LocalizationSettings.StringDatabase.GetLocalizedStringAsync(tableName, key);
+            await operation.Task;
+            return operation.Result;
         }
 
-        public string[] GetWordsByKey(string tableName, string key)
+        public async Task<string[]> GetWordsByKeyAsync(string tableName, string key)
         {
-            string rowWords = GetWordByKey(tableName, key);
+            string rowWords = await GetWordByKeyAsync(tableName, key);
 
             if (string.IsNullOrEmpty(rowWords)) 
                 return new string[] {""};

@@ -5,6 +5,7 @@ using Progression;
 using Data;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 
 namespace Gallery
@@ -52,10 +53,10 @@ namespace Gallery
             OnOpened?.Invoke();
         }
 
-        public void Close()
+        public async void Close()
         {
             _view.Hide();
-            _view.SetSelectButtonText(GetLocalizedString(_maskConfig.Gallery.SelectButtonKey));
+            _view.SetSelectButtonText(await GetLocalizedString(_maskConfig.Gallery.SelectButtonKey));
             OnClosed?.Invoke();
         }
 
@@ -69,17 +70,17 @@ namespace Gallery
                 ShowFullscreenForSelected();
         }
 
-        private void ToggleFullscreen()
+        private async void ToggleFullscreen()
         {
             if (_view.IsFullscreenActive)
             {
                 _view.HideFullscreen();
-                _view.SetSelectButtonText(GetLocalizedString(_maskConfig.Gallery.SelectButtonKey));
+                _view.SetSelectButtonText(await GetLocalizedString(_maskConfig.Gallery.SelectButtonKey));
             }
             else
             {
                 ShowFullscreenForSelected();
-                _view.SetSelectButtonText(GetLocalizedString(_maskConfig.Gallery.CloseImageKey));
+                _view.SetSelectButtonText(await GetLocalizedString(_maskConfig.Gallery.CloseImageKey));
             }
         }
 
@@ -118,21 +119,21 @@ namespace Gallery
             return 0;
         }
 
-        public void RefreshLocalization()
+        public async void RefreshLocalization()
         {
             if (_maskConfig == null) return;
             
-            string select = GetLocalizedString(_maskConfig.Gallery.SelectButtonKey);
-            string close  = GetLocalizedString(_maskConfig.Gallery.CloseButtonKey);
+            string select = await GetLocalizedString(_maskConfig.Gallery.SelectButtonKey);
+            string close = await GetLocalizedString(_maskConfig.Gallery.CloseButtonKey);
 
             _view.SetLocalizedTexts(select, close);
         }
 
-        private string GetLocalizedString(string key)
+        private async Task<string> GetLocalizedString(string key)
         {
             if(string.IsNullOrEmpty(key)) return string.Empty;
 
-            return LocalizationHelper.Get(_maskConfig.EndPanel.NameTable, key);
+            return await LocalizationHelper.GetAsync(_maskConfig.EndPanel.NameTable, key);
         }
     }
 }
